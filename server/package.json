@@ -1,0 +1,36 @@
+{
+  "name": "server",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "migrate": "bun -b kysely-migrate",
+    "db:start": "docker-compose up -d",
+    "db:stop": "docker-compose down",
+    "db:shutdown":"wsl --shutdown",
+    "start": "bun --watch run src/server.ts",
+    "build": "bun build ./src/**/*.ts ./src/server.ts --outdir ./build"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/bun": "latest",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "kysely-migrate": "^0.0.16"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1605.0",
+    "bcrypt": "^5.1.1",
+    "crypto": "^1.0.1",
+    "express": "^4.19.2",
+    "express-fileupload": "^1.5.0",
+    "express-rate-limit": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "kysely": "^0.27.3",
+    "mongodb": "^6.5.0",
+    "mysql2": "^3.9.7",
+    "socket.io": "^4.7.5"
+  }
+}
