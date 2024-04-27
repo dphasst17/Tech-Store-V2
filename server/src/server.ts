@@ -1,6 +1,7 @@
 import express, { type Request, type Response } from "express";
 import rateLimit from "express-rate-limit";
-import productRoute from "./routes/product"
+import productRoute from "./routes/product";
+import authRoute from "./routes/auth";
 const app = express();
 const port = process.env.PORT ||3030;
 
@@ -42,6 +43,8 @@ app.get("/", (req:Request, res:Response) => {
   res.status(200).json({status:200,message:"Hello World!"});
 });
 app.use('/api/product',productRoute)
+app.use('/auth',authRoute)
+
 app.get('/api/test',(req,res) => {
   res.json("test")
 })

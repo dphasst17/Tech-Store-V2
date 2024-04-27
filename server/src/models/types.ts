@@ -1,5 +1,5 @@
 import type { Insertable, Selectable, Updateable } from "kysely";
-import type { Auth } from "types/auth";
+import type { AuthDB } from "types/auth";
 import type {
   CartType,
   OrderDetailType,
@@ -23,7 +23,7 @@ export interface Database {
   failorder: OrderType;
   failOrderDetail: OrderDetailType;
   imageProduct: "";
-  login: Auth;
+  auth: AuthDB;
   posts: "";
   products: ProductType;
   sale: SaleType;

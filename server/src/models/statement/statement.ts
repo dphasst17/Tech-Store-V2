@@ -43,6 +43,11 @@ export default class Statements {
       .where(condition.conditionName, condition.conditionMethod, condition.value)
       .executeTakeFirst();
   };
+  public removeData = async(table:string,condition:ConditionType) => {
+    return await db.deleteFrom(table)
+    .where(condition.conditionName,condition.conditionMethod,condition.value)
+    .executeTakeFirst()
+  }
   public tableChange = (method: "add" | "remove") => {};
   //update table detail, add new column, remove column
   public columnChange = (method: "add" | "remove", table: string, column: string, datatypes?: string) => {};

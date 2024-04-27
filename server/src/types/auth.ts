@@ -1,3 +1,11 @@
+export interface AuthDB{
+    idUser:string,
+    username:string,
+    password_hash:string,
+    rfToken:string,
+    role:number,
+    status:string
+}
 export interface Auth{
     username:string,
     password?:string,

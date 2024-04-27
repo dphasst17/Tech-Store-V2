@@ -3,7 +3,7 @@ import ProductStatement from "models/statement/product";
 import Statement, { type ConditionType } from "models/statement/statement"
 import type { ProductType, TypeDetail } from "types/types";
 import { responseData, responseMessage, responseMessageData } from "utils/response";
-
+import { convertData,convertMultiData } from "utils/utils";
 const products = new ProductStatement();
 const statement = new Statement()
 const handleFindData = async (res: any, handle: any) => {
@@ -16,22 +16,7 @@ const handleFindData = async (res: any, handle: any) => {
     };
   }
 };
-const convertData = (arr:any[]) => {
-  return Object.keys(arr[0]).map((c:string) => {return {nameCol:c,value:arr[0][c]}})
-}
-const convertMultiData = (arr:any[]) => {
-  const getKey = Object.keys(arr[0])
-  const formatData = arr.map((a:any) => {
-    return getKey.map((k:string) => {
-      return {
-        nameCol:k,
-        value:a[k]
-      }
-    })
-  })
-  return formatData
-}
-export default class Products {
+export default class ProductController {
   public getAll = async (req: Request, res: Response) => {
     handleFindData(res, products.findAll());
   };
@@ -118,9 +103,9 @@ export default class Products {
       value:data.idProduct
     }
     try {
-      const insertProduct = data.product && await statement.updateDataByCondition('products',product,condition)
-      const insertDetail = data.detail && await statement.updateDataByCondition(data.tableName,detail,condition);
-      (insertProduct || insertDetail) ? 
+      const updateProduct = data.product && await statement.updateDataByCondition('products',product,condition);
+      const updateDetail = data.detail && await statement.updateDataByCondition(data.tableName,detail,condition);
+      (updateProduct || updateDetail) ? 
       responseMessage(res,200,'Update product is success')
       : responseMessage(res, 500, "Server errors");
     } catch {
@@ -146,6 +131,34 @@ export default class Products {
       };
     }
   }
-  public updateSaleEvent = async (req:Request, res:Response) => {}
+  public updateSaleEvent = async (req:Request, res:Response) => {
+    const data = req.body;
+    const idSale = data.idSale || data.id;
+    const sale = data.sale && convertData(data.sale)
+    const saleDetail = data.detail && convertData(data.detail)
+    
+    const condition:ConditionType = {
+      conditionName:"idSale",
+      conditionMethod:"=",
+      value:idSale
+    }
+    const conditionDetail:ConditionType = {
+      conditionName:"id",
+      conditionMethod:"in",
+      value:data.listId
+    }
+    try{
+      const updateSale = data.sale && await statement.updateDataByCondition('sale',sale,condition);
+      const updateDetail = data.detail && await statement.updateDataByCondition('saleDetail',saleDetail,conditionDetail);
+      (updateSale || updateDetail) ? 
+      responseMessage(res,200,'Update product is success')
+      : responseMessage(res, 500, "Server errors");
+    }
+    catch{
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
 
 }
