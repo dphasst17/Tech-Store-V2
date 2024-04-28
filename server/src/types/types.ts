@@ -64,7 +64,7 @@ export interface TransportType{
   costs:number,
   method:string,
   edd:Date,
-  status:'paid' | 'unpaid'
+  paymentStatus:'paid' | 'unpaid'
 }
 export interface TransportDetailType{
   idTrans:number,

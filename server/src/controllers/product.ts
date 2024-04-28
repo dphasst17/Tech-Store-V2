@@ -3,19 +3,10 @@ import ProductStatement from "models/statement/product";
 import Statement, { type ConditionType } from "models/statement/statement"
 import type { ProductType, TypeDetail } from "types/types";
 import { responseData, responseMessage, responseMessageData } from "utils/response";
-import { convertData,convertMultiData } from "utils/utils";
+import { convertData,convertMultiData,handleFindData } from "utils/utils";
 const products = new ProductStatement();
 const statement = new Statement()
-const handleFindData = async (res: any, handle: any) => {
-  try {
-    const result = <ProductType[]>await handle;
-    responseData(res, 200, result);
-  } catch {
-    (errors: any) => {
-      responseMessageData(res, 500, "Server errors", errors);
-    };
-  }
-};
+
 export default class ProductController {
   public getAll = async (req: Request, res: Response) => {
     handleFindData(res, products.findAll());
@@ -82,7 +73,7 @@ export default class ProductController {
     const detail = convertData(data.detail)
     try {
       const insertProduct = await statement.insertData('products',product);
-      const convertDetail = [...detail,{nameCol:'idProduct',value:Number(111)}]
+      const convertDetail = [...detail,{nameCol:'idProduct',value:Number(insertProduct.insertId)}]
       const insertDetail = await statement.insertData(data.tableName,convertDetail)
       insertProduct && insertDetail ? 
       responseMessageData(res,201,'Add new product is success',{id:Number(insertProduct.insertId)})

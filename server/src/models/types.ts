@@ -1,4 +1,3 @@
-import type { Insertable, Selectable, Updateable } from "kysely";
 import type { AuthDB } from "types/auth";
 import type {
   CartType,
@@ -8,6 +7,7 @@ import type {
   SaleDetailType,
   SaleType,
   TransportDetailType,
+  TransportType,
   TypeDetail,
   TypeProduct,
   UserAddressType,
@@ -28,12 +28,12 @@ export interface Database {
   products: ProductType;
   sale: SaleType;
   saleDetail: SaleDetailType;
-  transports: TransportDetailType;
+  transports: TransportType;
   transDetail: TransportDetailType;
   type: TypeProduct;
   typedetail: TypeDetail;
   userAddress: UserAddressType;
-  user: UserType;
+  users: UserType;
   warehouse: WarehouseType;
 
   [anyTable: string]: any;

@@ -19,22 +19,36 @@ export default class Statements {
   };
   //insert multi data
   public insertDataMulti = async (table: string, data: ValueType[][]) => {
-    const resultLengthMulti = data.map(d => eval(`({
-      ${d.map(c => `${c.nameCol}:${typeof c.value === "string" ? `"${c.value}"` : c.value}`)}
-    })`))
-    return await db
-      .insertInto(table)
-      .values(resultLengthMulti)
-      .executeTakeFirst();
+    const resultLengthMulti = data.map((d) =>
+      eval(`({
+      ${d.map((c) => `${c.nameCol}:${typeof c.value === "string" ? `"${c.value}"` : c.value}`)}
+    })`)
+    );
+    return await db.insertInto(table).values(resultLengthMulti).executeTakeFirst();
   };
+
+
   //insert data with select from table
-  public insertSubQuery = async (fromTable: string, colInsert: string[], toTable: string, colQuery: string[]) => {
+  public insertSubQuery = async (
+    tableInsert: string,
+    colInsert: string[],
+    tableSelect: string,
+    colSelect: any[],
+    condition: ConditionType,
+    join?: any[],
+  ) => {
     return await db
-      .insertInto(toTable)
+      .insertInto(tableInsert)
       .columns(colInsert)
-      .expression((eb: any) => eb.selectFrom(fromTable).select(colQuery))
+      .expression((eb: any) => {
+        let query: any = eb.selectFrom(tableSelect).select(colSelect);
+        join && join.map((j: any) => (query = query.innerJoin(j.table, j.key1, j.key2)));
+        return query.where(condition.conditionName, condition.conditionMethod, condition.value);
+      })
       .execute();
   };
+
+
   public updateDataByCondition = async (table: string, data: ValueType[], condition: ConditionType) => {
     const result = data.map((c) => `${c.nameCol}:${typeof c.value === "string" ? `'${c.value}'` : c.value}`).toString();
     return await db
@@ -43,12 +57,14 @@ export default class Statements {
       .where(condition.conditionName, condition.conditionMethod, condition.value)
       .executeTakeFirst();
   };
-  public removeData = async(table:string,condition:ConditionType) => {
-    return await db.deleteFrom(table)
-    .where(condition.conditionName,condition.conditionMethod,condition.value)
-    .executeTakeFirst()
-  }
-  public tableChange = (method: "add" | "remove") => {};
-  //update table detail, add new column, remove column
+  public removeData = async (table: string, condition: ConditionType) => {
+    return await db
+      .deleteFrom(table)
+      .where(condition.conditionName, condition.conditionMethod, condition.value)
+      .executeTakeFirst();
+  };
+  //this is code sql for create table or drop table
+  public table = (method: "add" | "remove") => {};
+  //update table : add column , change column or drop column
   public columnChange = (method: "add" | "remove", table: string, column: string, datatypes?: string) => {};
 }
