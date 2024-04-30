@@ -67,6 +67,7 @@ export interface TransportType{
   paymentStatus:'paid' | 'unpaid'
 }
 export interface TransportDetailType{
+  idOrdDetail:number,
   idTrans:number,
   idProduct:number,
   countProduct:number,
@@ -115,11 +116,32 @@ export interface SaleDetailType{
   idProduct:number,
   discount:number
 }
-
-export interface PostsType{}
+export interface CategoryPostsType{
+  idType:number,
+  nameType:string,
+  create_at:Date,
+  update_at:Date
+}
+export interface PostsType{
+  idPosts:number,
+  dateAdded:Date,
+  idType:number,
+  nameType?:string,
+  poster:string,
+  valuePosts:string,
+  create_at:Date,
+  update_at:Date
+}
 export interface ImageProductType{
+  idImg:number,
+  idProduct:number,
+  type:"extra"|"default",
+  img:string
 
 }
 export interface CommentType{
-  
+  idComment:number,
+  commentValue:string,
+  idProduct:number,
+  dateComment:string
 }

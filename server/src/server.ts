@@ -3,7 +3,11 @@ import rateLimit from "express-rate-limit";
 import productRoute from "./routes/product";
 import authRoute from "./routes/auth";
 import userRoute from "./routes/user";
-import tranRoute from "./routes/transport"
+import orderRoute from "./routes/order"
+import cartRoute from "./routes/cart"
+import wareRoute from "./routes/warehouse"
+import postRoute from "./routes/posts"
+import commentRoute from "./routes/comment"
 const app = express();
 const port = process.env.PORT ||3030;
 
@@ -47,7 +51,11 @@ app.get("/", (req:Request, res:Response) => {
 app.use('/api/product',productRoute)
 app.use('/auth',authRoute)
 app.use('/user',userRoute)
-app.use('/tran',tranRoute)
+app.use('/order',orderRoute)
+app.use('/cart',cartRoute)
+app.use('/ware',wareRoute)
+app.use('/post',postRoute)
+app.use('/comment',commentRoute)
 
 app.get('/api/test',(req,res) => {
   res.json("test")

@@ -5,5 +5,6 @@ const router = express.Router();
 const userController = new UserController()
 
 router.get('/',verifyToken,userController.getUser)
+router.patch('/',verifyToken,userController.userUpdate)
 
 export default router

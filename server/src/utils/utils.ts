@@ -17,7 +17,7 @@ export const convertMultiData = (arr: any[]) => {
   });
   return formatData;
 };
-export const handleFindData = async (res: any, handle: any) => {
+export const handleFindData = async (res: any, handle: any,) => {
   try {
     const result = await handle;
     responseData(res, 200, result);
@@ -27,3 +27,16 @@ export const handleFindData = async (res: any, handle: any) => {
     };
   }
 };
+export const handleChangeData = async(res: any, handle: any,method:"add" | "update"| "delete") => {
+  try {
+    const result = await handle;
+    if(!result){
+      responseMessageData(res, 401, `${method.toUpperCase()} is failed`);
+    }
+    responseMessageData(res, 200, `${method.toUpperCase()} is success`);
+  } catch {
+    (errors: any) => {
+      responseMessageData(res, 500, "Server errors", errors);
+    };
+  }
+}

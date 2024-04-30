@@ -1,8 +1,12 @@
 import type { AuthDB } from "types/auth";
 import type {
   CartType,
+  CategoryPostsType,
+  CommentType,
+  ImageProductType,
   OrderDetailType,
   OrderType,
+  PostsType,
   ProductType,
   SaleDetailType,
   SaleType,
@@ -16,20 +20,21 @@ import type {
 } from "types/types";
 
 export interface Database {
-  billDetail: OrderDetailType;
-  bills: OrderType;
+  ordsDetail: OrderDetailType;
+  ords: OrderType;
   carts: CartType;
-  comments: "";
-  failorder: OrderType;
-  failOrderDetail: OrderDetailType;
-  imageProduct: "";
+  comments: CommentType;
+  ordf: OrderType;
+  ordfDetail: OrderDetailType;
+  imageProduct: ImageProductType;
   auth: AuthDB;
-  posts: "";
+  posts: PostsType;
+  typePost:CategoryPostsType;
   products: ProductType;
   sale: SaleType;
   saleDetail: SaleDetailType;
-  transports: TransportType;
-  transDetail: TransportDetailType;
+  ord: TransportType;
+  ordDetail: TransportDetailType;
   type: TypeProduct;
   typedetail: TypeDetail;
   userAddress: UserAddressType;
