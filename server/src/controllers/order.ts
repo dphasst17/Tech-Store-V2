@@ -28,7 +28,7 @@ export default class OrderController {
     const idUser = req.idUser;
     const data = req.body;
     const idTrans = `${idUser}${month}${year}-${randomText(4)}`;
-    const addData = data.tran.map((c: any) => {
+    const addData = data.order.map((c: any) => {
       return {
         ...c,
         idTrans: idTrans,

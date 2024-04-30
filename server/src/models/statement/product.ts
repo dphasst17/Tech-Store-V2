@@ -11,6 +11,24 @@ export default class ProductStatement {
       .execute();
   };
 
+  public findAllType = async () => {
+    return await db
+      .selectFrom("type")
+      .select<any>((eb: any) => [
+        "type.idType",
+        "type.nameType",
+        jsonArrayFrom(
+          eb
+            .selectFrom("typedetail as td")
+            .select(["id", "type", "name", "datatypes", "displayname", "displayorder"])
+            .whereRef("td.type", "=", "type.nameType")
+            .where("td.displayorder","<",5)
+            .orderBy("td.displayorder asc")
+        ).as("detail")
+      ])
+      .execute();
+  };
+
   public findAll = async () => {
     return await db
       .selectFrom("products as p")
@@ -42,6 +60,7 @@ export default class ProductStatement {
         "price",
         "imgProduct",
         "p.idType",
+        "view",
         "brand",
         "t.nameType",
         sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount,
@@ -172,5 +191,4 @@ export default class ProductStatement {
       .where("sale.idSale", "=", idSale)
       .execute();
   };
-  
 }

@@ -8,6 +8,22 @@ const products = new ProductStatement();
 const statement = new Statement()
 
 export default class ProductController {
+  public getAllType = async (req:Request,res:Response) => {
+    try {
+      const result = await products.findAllType();
+      const sortData = result.map((r:any) => {
+        return {
+          ...r,
+          detail:r.detail.sort((a:any,b:any) => a.displayorder - b.displayorder)
+        }
+      })
+      responseData(res, 200, sortData);
+    } catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
   public getAll = async (req: Request, res: Response) => {
     handleFindData(res, products.findAll());
   };
