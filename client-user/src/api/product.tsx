@@ -10,12 +10,12 @@ export const productGetByType = async(type:string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/type/${type}`)
     .then(res => res.json())
 }
-export const productGetDetail = async(type:string,idProduct:number) => {
-    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/detail/${type}/${idProduct}`)
+export const productGetDetail = async(obj:{type:string,idProduct:number}) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/detail/${obj.type}/${obj.idProduct}`)
     .then(res => res.json())
 }
 export const productGetNew = async() => {
-    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product`)
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/new`)
     .then(res => res.json())
 }
 export const productGetByKey = async(key:string) => {

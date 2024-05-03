@@ -9,7 +9,7 @@ const Post = () => {
     return <section className="flex items-center w-full h-auto min-h-[80vh]">
         <div className="p-4 mx-auto w-[90%] h-auto">
             <div className="grid grid-cols-1 gap-4 lg:gap-8 sm:gap-4 sm:grid-cols-2 lg:grid-cols-2">
-                {post?.map((e: PostType) => <Fade triggerOnce direction='up' fraction={0.5} key={e.idPost}><PostLayout data={e} /></Fade>)}
+                {post?.slice(0, 4).map((e: PostType) => <Fade triggerOnce direction='up' fraction={0.7}><PostLayout data={e} /></Fade>)}
             </div>
         </div>
     </section>

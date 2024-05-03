@@ -3,7 +3,8 @@ import * as apiUser from "../api/user"
 import * as apiTrans from "../api/order"
 import * as apiComment from "../api/comment"
 import * as apiPosts from "../api/post"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { StateContext } from "../context/stateContext"
 const productApi = apiProduct as Record<string, any>;
 const userApi = apiUser as Record<string, any>;
 const orderApi = apiTrans as Record<string, any>;
@@ -35,16 +36,19 @@ const handleCheckTypeGet= (type:string,fName:any,key?:any) => {
 }
 
 export const useFetchData = (type:string,fName:string) => {
+    const {setIsLoading} = useContext(StateContext)
     const [data ,setData] = useState<any | null>(null);
     const [err,setErr] = useState<any | null>(null)
     const url = handleCheckTypeGet(type,fName);
-    useEffect(() => {
-        
+    useEffect(() => { 
+        setIsLoading(true) 
         url().then((res:any) => {
             if(res.status === 500){
                 throw Error(`Message: ${res.messages}`);
             }
             setData(res)
+            setIsLoading(false)
+            
         })
         .catch((err:any) => {
             setErr(err)
@@ -53,20 +57,22 @@ export const useFetchData = (type:string,fName:string) => {
     return {data,err};
 }
 export const useFetchDataByKey = (type:string,fName:string,key:any) => {
+    const {setIsLoading} = useContext(StateContext)
     const [data ,setData] = useState<any | null>(null);
     const [err,setErr] = useState<any | null>(null)
-    const url = handleCheckTypeGet(type,fName,key);
     useEffect(() => {
-        
-        url().then((res:any) => {
+        setIsLoading(true)
+        const url = handleCheckTypeGet(type,fName,key);
+        url.then((res:any) => {
             if(res.status === 500){
                 throw Error(`Message: ${res.messages}`);
             }
             setData(res)
+            setIsLoading(false)
         })
         .catch((err:any) => {
             setErr(err)
         })
-    },[url])
+    },[])
     return {data,err};
 }

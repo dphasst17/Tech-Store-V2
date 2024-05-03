@@ -5,8 +5,10 @@ import { productGetByType } from "../api/product";
 
 export const ApiContext = createContext({});
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
-    const { setProduct, setType } = useContext(StateContext)
+    const { setPost,setNewProduct,setProduct, setType } = useContext(StateContext)
     const { data: dataType } = useFetchData('product', 'productGetAllType')
+    const { data:newProduct } = useFetchData('product','productGetNew')
+    const { data:postAll } = useFetchData('posts','postGetAll')
     useEffect(() => {
         if (dataType) {
             setType(dataType.data);
@@ -18,6 +20,10 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
             });
         }
     }, [dataType])
+    useEffect(() => {
+        newProduct && setNewProduct(newProduct.data)
+        postAll && setPost(postAll.data)
+    },[newProduct,postAll])
     return (
         <ApiContext.Provider value={{}}>
             {children}
