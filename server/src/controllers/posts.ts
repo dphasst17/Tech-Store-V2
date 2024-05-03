@@ -13,20 +13,7 @@ export default class PostsController {
   public getAll = async (req: Request, res: Response) => {
     try {
       const result = await postStatement.getAll();
-      const formatData = result.map((p: any) => {
-        let dom = new JSDOM(p.valuesPosts);
-
-        let firstHeadingOrParagraph = dom.window.document.querySelector("h1, h2, h3, p")?.textContent;
-
-        let firstImgSrc = dom.window.document.querySelector("img")?.getAttribute("src");
-        return {
-          ...p,
-          dateAdded: p.dateAdded.split("-").reverse().join("/"),
-          title: firstHeadingOrParagraph,
-          banner: firstImgSrc,
-        };
-      });
-      responseData(res,200,formatData)
+      responseData(res, 200, result);
     } catch {
       (errors: any) => {
         responseMessageData(res, 500, "Server errors", errors);
@@ -34,34 +21,33 @@ export default class PostsController {
     }
   };
   public getCategory = async (req: Request, res: Response) => {
-    handleFindData(res,postStatement.getCategory())
+    handleFindData(res, postStatement.getCategory());
   };
-  public getDetail = async (req:Request,res:Response) => {
-    const idPosts = req.params["id"]
-    handleFindData(res,postStatement.getDetail(Number(idPosts)))
-  }
+  public getDetail = async (req: Request, res: Response) => {
+    const idPosts = req.params["id"];
+    handleFindData(res, postStatement.getDetail(Number(idPosts)));
+  };
   public insertPost = async (request: Request, res: Response) => {
-    const req = request as RequestCustom
-    const idUser = req.idUser 
-    const data = req.body
-    const addData = data.map((p:any) => {
-        return {
-            ...p,
-            poster:idUser
-        }
-    })
-    const changeData = convertData(addData)
-    handleChangeData("res",statement.insertData("posts",changeData),"add")
-
+    const req = request as RequestCustom;
+    const idUser = req.idUser;
+    const data = req.body;
+    const addData = data.map((p: any) => {
+      return {
+        ...p,
+        poster: idUser,
+      };
+    });
+    const changeData = convertData(addData);
+    handleChangeData("res", statement.insertData("posts", changeData), "add");
   };
   public updatePost = async (req: Request, res: Response) => {
-    const data = req.body
-    const changeData = convertData(data.detail)
-    const condition:ConditionType = {
-        conditionName:"idPosts",
-        conditionMethod:"=",
-        value:data.id
-    }
-    handleChangeData(res,statement.updateDataByCondition("posts",changeData,condition),"update")
+    const data = req.body;
+    const changeData = convertData(data.detail);
+    const condition: ConditionType = {
+      conditionName: "idPosts",
+      conditionMethod: "=",
+      value: data.id,
+    };
+    handleChangeData(res, statement.updateDataByCondition("posts", changeData, condition), "update");
   };
 }

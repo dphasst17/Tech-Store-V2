@@ -102,6 +102,10 @@ export default class AuthController {
       };
     }
   };
+  public logout = async (request:Request,res:Response) => {
+    const req = request as RequestCustom
+    const idUser = req.idUser
+  }
   public register = async (req: Request, res: Response) => {
     const data = req.body;
     const username = data.username;

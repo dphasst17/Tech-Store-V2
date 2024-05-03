@@ -123,11 +123,13 @@ export interface CategoryPostsType{
   update_at:Date
 }
 export interface PostsType{
-  idPosts:number,
+  idPost:number,
   dateAdded:Date,
   idType:number,
   nameType?:string,
   poster:string,
+  title:string,
+  thumbnails:string,
   valuePosts:string,
   create_at:Date,
   update_at:Date

@@ -3,7 +3,7 @@ import { db } from "models/connect"
 export default class PostStatement{
     public getAll = async() => {
         return await db.selectFrom("posts as p")
-        .select(["idPosts","p.idType","t.nameType","dateAdded","valuePosts","poster"])
+        .select(["idPost","p.idType","t.nameType","dateAdded","p.title","p.thumbnails","valuesPosts","poster"])
         .innerJoin("typePost as t","p.idType","t.idType")
         .orderBy("dateAdded desc")
         .execute()
@@ -14,10 +14,10 @@ export default class PostStatement{
         .execute()
     }
     public getDetail = async(id:number) => {
-        return await db.selectFrom("posts")
+        return await db.selectFrom("posts as p")
         .innerJoin("typePost as t","p.idType","t.idType")
-        .select(["idPosts","p.idType","t.nameType","dateAdded","valuePosts","poster","create_at","update_at"])
-        .where("idPosts","=",id)
+        .select(["idPost","p.idType","t.nameType","dateAdded","p.title","p.thumbnails","valuesPosts","poster"])
+        .where("idPost","=",id)
         .execute()
     }
 }

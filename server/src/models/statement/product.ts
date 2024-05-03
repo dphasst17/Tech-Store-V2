@@ -88,6 +88,7 @@ export default class ProductStatement {
         "nameProduct",
         "price",
         "imgProduct",
+        "p.des",
         "p.idType",
         "brand",
         "t.nameType",
