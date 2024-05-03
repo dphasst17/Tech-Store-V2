@@ -13,3 +13,16 @@ export interface PostType {
     nameType: string, 
     idType?: number
 }
+export interface ProductType{
+    idProduct:number,
+    nameProduct:string,
+    price:number | string,
+    discount?:number,
+    imgProduct:string | any[]
+    des?:string,
+    idType:number,
+    nameType:string,
+    view:number,
+    brand:string,
+    detail?:any[]
+}

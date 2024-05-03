@@ -7,7 +7,7 @@ const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number
   const { data } = useFetchDataByKey('product', 'productGetDetail', { type: nameType, idProduct: idProduct })
   useEffect(() => {
     data && setCurrentImage(data.data[0].imgProduct[0].img)
-    data && console.log(data)
+    data && (document.title = data.data[0].nameProduct)
   }, [data])
   return <section className="text-zinc-900">
     <div className="container mx-auto px-4">

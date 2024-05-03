@@ -10,9 +10,15 @@ const Product_Layout_01 = ({ data }: { data: any }) => {
     const navigateDetail = () => {
         navigate(`/product/detail/${data.nameType}/${data.idProduct}`)
     }
-    return <Fade triggerOnce fraction={0.6} className="w-[20%] min-w-[200px] m-1 " direction="up" delay={1}>
+    return <Fade triggerOnce fraction={0.6} className="w-[20%] min-w-[200px] m-1 "  delay={1}>
         <Card className="w-full h-auto min-h-[150px] rounded-md border border-solid border-zinc-700">
-            <CardBody className="w-full h-auto flex flex-col items-center justify-center cursor-pointer">
+            <CardBody className="relative w-full h-auto flex flex-col items-center justify-center cursor-pointer">
+                <div className="absolute top-0 right-1 w-auto min-w-[80px] text-center font-bold my-1 z-10 bg-zinc-700 rounded-md text-white">
+                    ${data.discount !== 0 ? data.price : data.price}
+                </div>
+                {data.discount !== 0 && <div className="absolute top-0 left-1 w-auto min-w-[80px] text-center font-bold my-1 z-10 bg-red-600 rounded-md text-white">
+                    -{data?.discount}%
+                </div>}
                 <div className="w-full h-[150px]" onClick={navigateDetail}>
                     <img className="w-3/5 h-full mx-auto object-contain" src={data?.imgProduct} alt={`images-${data?.nameProduct}`}/>
                 </div>
@@ -38,6 +44,7 @@ const Product_Layout_01 = ({ data }: { data: any }) => {
                             <TbListDetails className="text-[20px]" />
                         </Button>
                     </div>
+                    
                 </div>
             </CardBody>
         </Card>
