@@ -14,7 +14,7 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
             setType(dataType.data);
             const tempProduct: any[] = [];
             Promise.all(dataType.data.map((e: any) => productGetByType(e.nameType)
-            .then(res => tempProduct.push({ type: e.nameType, data: res.data }))))
+            .then(res => tempProduct.push({idType:e.idType,type: e.nameType, data: res.data }))))
             .then(() => {
                 setProduct((prevProduct: any) => (prevProduct !== null ? [...prevProduct, ...tempProduct] : [...tempProduct]));
             });

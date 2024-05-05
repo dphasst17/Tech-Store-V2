@@ -11,7 +11,7 @@ const Post = () => {
             <div className="w-full flex flex-wrap justify-around content-around">
                 {post?.slice(0, 4).map((e: PostType) => <Fade 
                 className='w-full sm:w-4/5 xl:w-[45%] my-1'
-                triggerOnce direction='up' fraction={0.7}>
+                fraction={0.8} key={e.idPost}>
                     <PostLayout data={e} />
                 </Fade>)}
             </div>

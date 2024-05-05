@@ -4,7 +4,7 @@ import { PostType } from 'types/type'
 const PostLayout = ({ data }: { data: PostType }) => {
     const navigate = useNavigate()
     return <div onClick={() => { navigate(`/post/detail/${data.idPost}/${data.title}`) }}
-    className="w-full flex flex-wrap mb-0 overflow-hidden rounded flex-row dark:bg-gray-700 cursor-pointer" key={data.idPost}>
+    className="w-full flex flex-wrap mb-0 overflow-hidden rounded flex-row dark:bg-gray-700 cursor-pointer">
         <div className="relative w-full overflow-hidden lg:w-2/4 h-80">
             <img className="object-cover w-full h-full transition-all hover:scale-110"
                 src={data.thumbnails} alt="" />

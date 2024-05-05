@@ -42,6 +42,7 @@ const Header = () => {
     </div>
     <nav className={`w-full md:w-[45%] h-full flex justify-around items-center bg-zinc-900 bg-opacity-60 ${toggle ? 'translate-y-0' : 'translate-y-20'} transition-all rounded-lg`}>
       {listNav.map((n: any) => <div
+      key={`header-${n.id}`}
         onClick={() => { navigate(n.url) }}
         className={`w-1/5 h-4/5 flex items-center justify-evenly text-[17px] ${location.pathname === n.url ? "bg-zinc-800 bg-opacity-100 font-semibold" : "bg-transparent"} hover:bg-zinc-800 hover:font-semibold transition-all rounded-md cursor-pointer`}
       >

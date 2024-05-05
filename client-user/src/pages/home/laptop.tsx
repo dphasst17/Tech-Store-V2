@@ -11,7 +11,7 @@ const Laptop = () => {
     }, [product]);
     return <div className='h-laptop w-[90%] h-auto flex flex-wrap justify-around items-around'>
         <Fade triggerOnce direction="up" delay={0} className='w-full text-center text-[35px] font-bold text-zinc-700'>LAPTOP</Fade>
-        {data?.slice(0, 12).map((d: any) => <Product_Layout_01 data={d} key={`h-laptop-${d.idProduct}`}/>)}
+        {data?.slice(0, 12).map((d: any) => <Product_Layout_01 data={d} key={`h-laptop-${d.idProduct}`} name="laptop"/>)}
     </div>
 }
 
