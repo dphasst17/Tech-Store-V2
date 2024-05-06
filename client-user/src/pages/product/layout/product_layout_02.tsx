@@ -1,0 +1,23 @@
+import { CartType } from "../../../types/type"
+
+const Product_layout_02 = ({data}:{data:CartType}) => {
+  return <div
+  className="flex items-center gap-3 w-full h-[80px] justify-center rounded-md">
+  <div className="img-box w-1/5 h-full">
+      <img src={data.detail[0].imgProduct} alt="perfume bottle image" className="object-contain w-full h-full" />
+  </div>
+  <div className="pro-data w-2/4">
+      <h5 className="font-semibold text-sm truncate">
+        {data.detail[0].nameProduct}
+      </h5>
+      <h6 className="font-medium text-lg leading-8 text-blue-600  max-[550px]:text-center">${data.detail[0].price}</h6>
+  </div>
+  <div className='w-1/4 flex justify-around '>
+      <button className='border border-solid border-zinc-600 rounded-md w-[30%] h-full'>-</button>
+      <button className='border border-solid border-zinc-600 rounded-md w-[30%] h-full'>{data.countProduct}</button>
+      <button className='border border-solid border-zinc-600 rounded-md w-[30%] h-full'>+</button>
+  </div>
+</div>
+}
+
+export default Product_layout_02

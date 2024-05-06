@@ -1,3 +1,21 @@
+export interface CartType{
+    idCart:number,
+    idProduct:number,
+    countProduct:number
+    detail:{
+        discount:number,
+        nameProduct:string,
+        imgProduct:string,
+        price:number
+    }[]
+}
+export interface UserType{
+    idUser:string,
+    nameUser:string,
+    phone:string,
+    address:{type:"default" | "extra", idAddress:number,detail:string}[],
+    cart:CartType[]
+}
 export interface UserUpdateType {
     table: "users" | "userAddress" | "carts"
     col: "idUser" | "idAddress" | "idCart",
@@ -30,4 +48,10 @@ export interface ProductFilterType {
     brand: string[];
     price: string;
     detail?: any[];
+}
+export interface Auth {
+    username:string,
+    password?:string,
+    confirm?:string,
+    email?:string
 }

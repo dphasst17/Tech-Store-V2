@@ -1,6 +1,6 @@
 export const authLogin = async(data:{username?:string,password?:string,email?:string}) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/login`,{
-        method:"",
+        method:"POST",
         headers:{
             'Content-Type':'application/json'
         },
@@ -8,9 +8,9 @@ export const authLogin = async(data:{username?:string,password?:string,email?:st
     })
     .then(res => res.json())
 }
-export const authRegister = async(data:{username?:string,password?:string,email?:string}) => {
+export const authRegister = async(data:{username:string,password:string,email:string}) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/register`,{
-        method:"",
+        method:"POST",
         headers:{
             'Content-Type':'application/json'
         },
@@ -18,9 +18,9 @@ export const authRegister = async(data:{username?:string,password?:string,email?
     })
     .then(res => res.json())
 }
-export const authForgot = async(data:{username?:string,email?:string}) => {
+export const authForgot = async(data:{username:string,email:string}) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/forgot`,{
-        method:"",
+        method:"POST",
         headers:{
             'Content-Type':'application/json'
         },
@@ -30,17 +30,16 @@ export const authForgot = async(data:{username?:string,email?:string}) => {
 }
 export const authToken = async(token:string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/token`,{
-        method:"",
+        method:"PATCH",
         headers:{
             'Content-Type':'application/json',
             'Authorization':`Bearer ${token}`
         },
     })
-    .then(res => res.json())
 }
 export const authUpdatePassword = async(current:string,password:string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/token`,{
-        method:"",
+        method:"PATCH",
         headers:{
             'Content-Type':'application/json'
         },

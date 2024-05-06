@@ -1,14 +1,20 @@
-import { Button, Input } from "@nextui-org/react"
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from "@nextui-org/react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { BiSearchAlt2 } from "react-icons/bi";
-import { AiOutlineHome } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineShoppingCart } from "react-icons/ai";
 import { GiLaptop } from "react-icons/gi";
-import { FaRegNewspaper, FaCaretDown  } from "react-icons/fa";
+import { FaRegNewspaper, FaCaretDown, FaRegUser } from "react-icons/fa";
 import { MdOutlineContactPhone } from "react-icons/md";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { StateContext } from "../../context/stateContext";
+import { CartContext } from "../../context/cartContext";
+import { CartType } from "../../types/type";
+import Product_layout_02 from "../../pages/product/layout/product_layout_02";
 const Header = () => {
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isLogin } = useContext(StateContext)
+  const { cart } = useContext(CartContext)
   const [toggle, setToggle] = useState(true)
   const listNav = [
     {
@@ -42,7 +48,7 @@ const Header = () => {
     </div>
     <nav className={`w-full md:w-[45%] h-full flex justify-around items-center bg-zinc-900 bg-opacity-60 ${toggle ? 'translate-y-0' : 'translate-y-20'} transition-all rounded-lg`}>
       {listNav.map((n: any) => <div
-      key={`header-${n.id}`}
+        key={`header-${n.id}`}
         onClick={() => { navigate(n.url) }}
         className={`w-1/5 h-4/5 flex items-center justify-evenly text-[17px] ${location.pathname === n.url ? "bg-zinc-800 bg-opacity-100 font-semibold" : "bg-transparent"} hover:bg-zinc-800 hover:font-semibold transition-all rounded-md cursor-pointer`}
       >
@@ -55,7 +61,27 @@ const Header = () => {
       <Button radius="sm" className="w-[10%] bg-zinc-800" isIconOnly><BiSearchAlt2 className="text-[20px] text-white" /></Button>
     </nav>
     <nav className={`w-[10%] h-full hidden md:flex justify-around items-center bg-zinc-900 bg-opacity-60 ${toggle ? 'translate-y-0' : 'translate-y-20'} transition-all rounded-lg`}>
-
+      {!isLogin && <Button radius="sm" color="danger" onClick={() => { navigate('/auth') }}>Login</Button>}
+      {isLogin && <Dropdown placement="top-end" offset={20} className="bg-zinc-700">
+        <DropdownTrigger>
+          <Button radius="sm" isIconOnly className="relative">
+            <AiOutlineShoppingCart className="w-4/5 h-3/5" />
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu closeOnSelect={false} className="max-w-[500px] max-h-[500px]">
+          {cart && cart.slice(0, 4).map((c: CartType) => <DropdownItem key={c.idCart}>
+            <Product_layout_02 data={c} />
+          </DropdownItem>)}
+          <DropdownItem className="flex justify-center items-center" variant="light">
+            <Button className="mx-auto">Detail</Button>
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+      }
+      {isLogin && <Button radius="sm" isIconOnly>
+        <FaRegUser className="w-4/5 h-3/5" />
+      </Button>
+      }
     </nav>
   </header>
 }

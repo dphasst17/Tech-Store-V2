@@ -2,7 +2,7 @@ import { UserUpdateType } from "types/type"
 
 export const getUser = async (token: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user`, {
-        method: "PATCH",
+        method: "GET",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`

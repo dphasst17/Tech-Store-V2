@@ -3,6 +3,7 @@ import LoadingComponent from "../loading/loadingComponent"
 import { useLocation } from "react-router-dom"
 import { StateContext } from "../../context/stateContext"
 import Header from "./header"
+import Auth from "../../pages/auth/auth"
 
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -16,7 +17,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="w-full h-auto">{children}</div>
       </main>
     </section>
-    : ""
+    : <Auth />
 }
 
 export default Layout

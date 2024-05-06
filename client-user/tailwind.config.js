@@ -9,6 +9,13 @@ export default {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      'boo': ['"Fjalla One"', 'sans-serif'],
+      'han': ['"PT Sans Narrow"', 'sans-serif'],
+      'honk': ['Honk', 'system-ui'],
+      'ps2': ['Press Start 2P', 'system-ui'],
+      'pr': ['Protest Revolution', 'sans-serif']
+    },
   },
   /* darkMode: "class", */
   plugins: [nextui()]
