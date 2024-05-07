@@ -10,10 +10,12 @@ import { StateContext } from "../../context/stateContext";
 import { CartContext } from "../../context/cartContext";
 import { CartType } from "../../types/type";
 import Product_layout_02 from "../../pages/product/layout/product_layout_02";
+import { RemoveToken } from "../../utils/token";
+import { removeLocalStorage } from "../../utils/localStorage";
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLogin } = useContext(StateContext)
+  const { isLogin,setIsLogin } = useContext(StateContext)
   const { cart } = useContext(CartContext)
   const [toggle, setToggle] = useState(true)
   const listNav = [
@@ -42,6 +44,13 @@ const Header = () => {
       icon: MdOutlineContactPhone
     }
   ]
+  const handleLogout = () => {
+    RemoveToken('aTk')
+    RemoveToken('rTk')
+    removeLocalStorage('isLogs')
+    setIsLogin(false)
+    navigate('/auth')
+  }
   return <header className={`w-[98vw] h-[7vh] flex justify-around transition-all fixed bottom-2 ${toggle ? 'z-40' : 'z-0'} rounded-md`}>
     <div onClick={() => { setToggle(!toggle) }} className="w-[3%] h-4/5 my-auto flex items-center justify-center bg-zinc-900 rounded-md">
       <FaCaretDown className={`text-white w-3/5 h-3/5 cursor-pointer ${toggle ? 'rotate-0' : 'rotate-180'} transition-all`} />
@@ -73,14 +82,24 @@ const Header = () => {
             <Product_layout_02 data={c} />
           </DropdownItem>)}
           <DropdownItem className="flex justify-center items-center" variant="light">
-            <Button className="mx-auto">Detail</Button>
+            <Button className="mx-auto" onClick={() => { navigate('/cart') }}>Detail</Button>
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
       }
-      {isLogin && <Button radius="sm" isIconOnly>
-        <FaRegUser className="w-4/5 h-3/5" />
-      </Button>
+      {isLogin && <Dropdown placement="top-end" offset={20} className="bg-zinc-700">
+        <DropdownTrigger>
+          <Button radius="sm" isIconOnly>
+            <FaRegUser className="w-4/5 h-3/5" />
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu closeOnSelect={false}>
+          <DropdownItem onClick={() => navigate('/user')}>User</DropdownItem>
+          <DropdownItem variant="light">
+            <Button size="sm" radius="sm" color="danger" onClick={handleLogout}>Logout</Button>
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
       }
     </nav>
   </header>

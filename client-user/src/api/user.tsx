@@ -43,16 +43,37 @@ export const cartInsert = async (token: string, idProduct: number, countProduct:
     })
         .then(res => res.json())
 }
-export const cartRemove = async (listId:number[] | string[]) => {
-    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/cart`,{
-        method:"DELETE",
+export const cartUpdate = async (idCart: number, count: number) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/cart`, {
+        method: "PATCH",
         headers: {
             'Content-Type': 'application/json',
         },
-        body:JSON.stringify({
-            listId:listId
+        body: JSON.stringify({
+            id: idCart,
+            value: count
         })
     })
-    .then(res => res.json())
+        .then(res => res.json())
+}
+export const cartRemove = async (listId: number[] | string[]) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/cart`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            listId: listId
+        })
+    })
+        .then(res => res.json())
 
+}
+export const getApiProvince = async () => {
+    return fetch(`https://vapi.vnappmob.com/api/province`)
+        .then(res => res.json())
+}
+export const getProvincesDetail = async (type: string, id: string) => {
+    return fetch(`https://vapi.vnappmob.com/api/province/${type}/${id}`)
+        .then(res => res.json())
 }

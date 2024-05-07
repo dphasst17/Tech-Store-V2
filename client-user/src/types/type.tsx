@@ -55,3 +55,6 @@ export interface Auth {
     confirm?:string,
     email?:string
 }
+export interface Modals {
+    setModalName: React.Dispatch<React.SetStateAction<string>>,
+}

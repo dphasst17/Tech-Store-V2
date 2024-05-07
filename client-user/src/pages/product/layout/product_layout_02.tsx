@@ -1,6 +1,9 @@
+import { useContext } from "react"
 import { CartType } from "../../../types/type"
+import { CartContext } from "../../../context/cartContext"
 
 const Product_layout_02 = ({data}:{data:CartType}) => {
+  const {updateCount} = useContext(CartContext)
   return <div
   className="flex items-center gap-3 w-full h-[80px] justify-center rounded-md">
   <div className="img-box w-1/5 h-full">
@@ -13,9 +16,9 @@ const Product_layout_02 = ({data}:{data:CartType}) => {
       <h6 className="font-medium text-lg leading-8 text-blue-600  max-[550px]:text-center">${data.detail[0].price}</h6>
   </div>
   <div className='w-1/4 flex justify-around '>
-      <button className='border border-solid border-zinc-600 rounded-md w-[30%] h-full'>-</button>
+      <button className='border border-solid border-zinc-600 rounded-md w-[30%] h-full' onClick={() => data.countProduct > 1 && updateCount(data.idCart,data.countProduct - 1)}>-</button>
       <button className='border border-solid border-zinc-600 rounded-md w-[30%] h-full'>{data.countProduct}</button>
-      <button className='border border-solid border-zinc-600 rounded-md w-[30%] h-full'>+</button>
+      <button className='border border-solid border-zinc-600 rounded-md w-[30%] h-full' onClick={() => updateCount(data.idCart,data.countProduct + 1)}>+</button>
   </div>
 </div>
 }

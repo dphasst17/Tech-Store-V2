@@ -5,8 +5,10 @@ import { Fade } from "react-awesome-reveal"
 import { TbListDetails } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { ProductType } from "types/type";
+import { CartContext } from "../../../context/cartContext";
 const Product_Layout_01 = ({ data,name }: { data: ProductType,name:string }) => {
     const { type } = useContext(StateContext)
+    const { addItemCart } = useContext(CartContext)
     const navigate = useNavigate()
     const navigateDetail = () => {
         navigate(`/product/detail/${data.nameType}/${data.idProduct}`)
@@ -42,7 +44,7 @@ const Product_Layout_01 = ({ data,name }: { data: ProductType,name:string }) => 
                         )}
                     </div>}
                     <div className="product-btn w-[90%] flex flex-wrap justify-around">
-                        <Button size="sm" className="w-3/4 font-semibold" color="primary">Add to cart</Button>
+                        <Button size="sm" className="w-3/4 font-semibold" color="primary" onClick={() => addItemCart(data)}>Add to cart</Button>
                         <Button size="sm" className="w-1/5" isIconOnly onClick={navigateDetail}>
                             <TbListDetails className="text-[20px]" />
                         </Button>

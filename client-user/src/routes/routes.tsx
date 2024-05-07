@@ -6,6 +6,7 @@ import Product from "../pages/product";
 import SearchProduct from "../pages/product/search";
 import Auth from "../pages/auth/auth";
 import Cart from "../pages/cart";
+import User from "../pages/user";
 const publicRoutes = [
     { path: "/", component: Home },
     { path: "/auth",component:Auth},
@@ -15,6 +16,7 @@ const publicRoutes = [
     { path: "/product/detail/:nameType/:idProduct",component:DetailProduct},
     { path: "/post",component:Post},
     { path: "/cart",component:Cart},
+    { path: "/user",component:User},
 ];
 const privateRoutes:any =[]
 export { publicRoutes,privateRoutes };
