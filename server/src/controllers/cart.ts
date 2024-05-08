@@ -2,17 +2,32 @@ import type { Request, Response } from "express";
 import type { ConditionType } from "models/statement/statement";
 import Statements from "models/statement/statement";
 import type { RequestCustom } from "types/types";
-import { responseMessage, responseMessageData } from "utils/response";
+import { responseData, responseMessageData } from "utils/response";
 import { convertData, handleChangeData } from "utils/utils";
 
 const statement = new Statements();
 export default class CartController {
+  //idProduct, count
   public cartInsert = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;
     const data = req.body;
-    const dataInsert = convertData(data.cart);
-    handleChangeData(res, statement.insertData("cart", dataInsert), "add");
+    const formatData = data.cart.map((c:any) => {
+      return {
+        ...c,
+        idUser:idUser
+      }
+    })
+    const dataInsert = convertData(formatData);
+    try {
+      const result = await statement.insertData("carts", dataInsert);
+      console.log(Number(result.insertId))
+      responseData(res, 201, {idCart:Number(result.insertId)});
+    } catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
   };
   public cartUpdateCount = async (req: Request, res: Response) => {
     const data = req.body;

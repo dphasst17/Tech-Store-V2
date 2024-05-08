@@ -6,5 +6,6 @@ const userController = new UserController()
 
 router.get('/',verifyToken,userController.getUser)
 router.patch('/',verifyToken,userController.userUpdate)
+router.post('/address',verifyToken,userController.userAddress)
 
 export default router

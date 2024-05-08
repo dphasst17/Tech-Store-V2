@@ -47,6 +47,7 @@ export default class ProductStatement {
       .leftJoin("warehouse as w", "p.idProduct", "w.idProduct")
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
       .leftJoin("sale", "sd.idSale", "sale.idSale")
+      .where("p.status","=","show")
       .groupBy("p.idProduct")
       .execute();
   };
@@ -76,6 +77,7 @@ export default class ProductStatement {
       .leftJoin("sale", "sd.idSale", "sale.idSale")
       .leftJoin(`${table} as ${shortKey}`, "p.idProduct", `${shortKey}.idProduct`)
       .where("t.nameType", "=", table)
+      .where("p.status","=","show")
       .groupBy("p.idProduct")
       .execute();
   };
@@ -107,6 +109,7 @@ export default class ProductStatement {
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
       .leftJoin("sale", "sd.idSale", "sale.idSale")
       .where("p.idProduct", "=", idProduct)
+      .where("p.status","=","show")
       .execute();
   };
 

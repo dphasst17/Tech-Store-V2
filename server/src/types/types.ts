@@ -17,6 +17,7 @@ export interface ProductType{
   view?:number,
   idType:number,
   brand:string,
+  status?:"show"|"hide",
   detail?:[],
   [x:string]:any
 }
@@ -32,7 +33,7 @@ export interface UserType{
 export interface UserAddressType{
   id:number,
   idUser:string,
-  type:'default' | 'extra',
+  typeAddress:'default' | 'extra',
   detail:string
 }
 export interface CartType{

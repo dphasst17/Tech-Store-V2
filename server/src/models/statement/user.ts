@@ -24,6 +24,7 @@ export default class UserStatement {
                   .select([
                     "nameProduct",
                     "imgProduct",
+                    "price",
                     sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0)`.as(
                       "discount"
                     ),

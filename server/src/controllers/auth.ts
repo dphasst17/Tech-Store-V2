@@ -12,7 +12,6 @@ const authStatement = new AuthStatement();
 const statement = new Statements();
 
 const createToken = (idUser: string, expired: string) => {
-  console.log(idUser)
   const token = jwt.sign({ id: idUser }, process.env.SECRET_KEY as string, { expiresIn: expired });
   const { exp: expiredToken } = jwt.decode(token) as jwt.JwtPayload;
   return { token, expiredToken };
@@ -71,10 +70,10 @@ export default class AuthController {
     let isPassword: boolean | string = "";
     try {
       const result = await authStatement.getAuth(username);
-      if (data.username && !result) {
+      if (!data.email && result.length === 0) {
         return responseMessage(res, 401, "Username does not exist");
       }
-      if (data.email && !result) {
+      if (data.email && result.length === 0) {
         const encode = encodePass(data.email);
         const split = data.email.split("@")[0];
         const regis = handleRegister(split, encode, data.email);
