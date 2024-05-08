@@ -9,11 +9,16 @@ export interface CartType{
         price:number
     }[]
 }
+export interface UserAddressType{
+    type:"default" | "extra", 
+    idAddress:number,
+    detail:string
+}
 export interface UserType{
     idUser:string,
     nameUser:string,
     phone:string,
-    address:{type:"default" | "extra", idAddress:number,detail:string}[],
+    address:UserAddressType[],
     cart:CartType[]
 }
 export interface UserUpdateType {
@@ -21,6 +26,13 @@ export interface UserUpdateType {
     col: "idUser" | "idAddress" | "idCart",
     cValue?: string | number,
     detail: any[]
+}
+export interface UserAddressAddType{
+    type:string,
+    dataOperation:{
+        detail?:string,
+        typeAddress?:string
+    }
 }
 export interface PostType {
     idPost: number,

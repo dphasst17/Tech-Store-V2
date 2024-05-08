@@ -1,4 +1,4 @@
-import { UserUpdateType } from "types/type"
+import { UserAddressAddType, UserUpdateType } from "types/type"
 
 export const getUser = async (token: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user`, {
@@ -23,7 +23,17 @@ export const updateUser = async (token: string, data: UserUpdateType) => {
     })
         .then(res => res.json())
 }
-
+export const userAddress = async (token:string, data:UserAddressAddType) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/user/address`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+}
 export const cartInsert = async (token: string, idProduct: number, countProduct: number, detail?: string) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/cart`, {
         method: "POST",
