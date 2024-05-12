@@ -76,9 +76,14 @@ export default class ProductController {
     const keyword = req.params["key"];
     handleFindData(res, products.findByKey(keyword));
   };
-  public getSaleEvent = async (req: Request, res: Response) => {
-    handleFindData(res, products.findSaleEvent());
+  public getAllSaleEvent = async (req: Request, res: Response) => {
+    handleFindData(res, products.findAllSaleEvent());
   };
+  public getSale = async (req: Request, res: Response) => {
+    const currentDate = new Date().toISOString().split('T')[0]
+    handleFindData(res, products.findSale(currentDate));
+
+  }
   public getSaleDetail = async (req: Request, res: Response) => {
     const idSale = req.params["idSale"];
     handleFindData(res, products.findSaleDetail(Number(idSale)));

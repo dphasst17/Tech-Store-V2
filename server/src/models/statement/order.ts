@@ -17,6 +17,7 @@ export default class OrderStatement {
         "costs",
         "edd",
         "paymentStatus",
+        "orderStatus",
         jsonArrayFrom(
           eb
             .selectFrom("ordDetail as td")

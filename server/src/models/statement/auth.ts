@@ -9,7 +9,7 @@ export default class AuthStatement{
     }
     public getMail = async(email:string) => {
         return await db.selectFrom('users')
-        .select(["email"])
+        .select(["idUser","email"])
         .where('email','=',email)
         .execute()
     }

@@ -5,8 +5,9 @@ import Statements, { type ConditionType } from "models/statement/statement";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { responseData, responseMessage, responseMessageData } from "utils/response";
-import { convertData, convertMultiData } from "utils/utils";
+import { convertData, convertMultiData, handleFindData } from "utils/utils";
 import type { RequestCustom } from "types/types";
+import { handleSendMail } from "utils/mail";
 
 const authStatement = new AuthStatement();
 const statement = new Statements();
@@ -24,13 +25,13 @@ const encodePass = (password: string) => {
   const salt = bcrypt.genSaltSync(saltRound);
   return bcrypt.hashSync(password, salt);
 };
-const handleRegister = async (username: string, password?: string, email?: string) => {
+const handleRegister = async (username: string, password?: string, email?: string, status?: string) => {
   const arrData = [
     {
       idUser: username,
       username: username,
       password_hash: password,
-      status: "activated",
+      status: status ? status : "activated",
     },
   ];
   const info = [
@@ -38,6 +39,8 @@ const handleRegister = async (username: string, password?: string, email?: strin
       idUser: username,
       nameUser: username,
       email: email,
+      created_at: new Date().toISOString().split("T")[0],
+      updated_at: new Date().toISOString().split("T")[0]
     },
   ];
   const condition: ConditionType = {
@@ -47,7 +50,7 @@ const handleRegister = async (username: string, password?: string, email?: strin
   };
   const authData = convertData(arrData);
   const infoData = convertData(info);
-  const [resultAuth,resultInfo] = await Promise.all([
+  const [resultAuth, resultInfo] = await Promise.all([
     statement.insertData("auth", authData),
     statement.insertData("users", infoData)
   ])
@@ -76,7 +79,7 @@ export default class AuthController {
       if (data.email && result.length === 0) {
         const encode = encodePass(data.email);
         const split = data.email.split("@")[0];
-        const regis = handleRegister(split, encode, data.email);
+        const regis = handleRegister(split, encode, data.email, "login");
         if (!regis) {
           return responseMessage(res, 401, "Login false");
         }
@@ -93,7 +96,7 @@ export default class AuthController {
         conditionMethod: "=",
         value: result[0].idUser,
       };
-      await statement.updateDataByCondition("auth", [{ nameCol: "rfToken", value: refreshToken }], condition);
+      await statement.updateDataByCondition("auth", [{ nameCol: "rfToken", value: refreshToken }, { nameCol: "status", value: "login" }], condition);
       responseData(res, 200, { accessToken, refreshToken, expiredA, expiredR });
     } catch {
       (errors: any) => {
@@ -101,9 +104,33 @@ export default class AuthController {
       };
     }
   };
-  public logout = async (request:Request,res:Response) => {
+  public logout = async (request: Request, res: Response) => {
     const req = request as RequestCustom
     const idUser = req.idUser
+    const data = [
+      {
+        rfToken: "",
+        status: "logout"
+      }
+    ]
+    const logOutUser = convertData(data)
+    const conditionLogOut: ConditionType = {
+      conditionName: "idUser",
+      conditionMethod: "=",
+      value: idUser
+    }
+    try {
+      const logOut = await statement.updateDataByCondition("auth", logOutUser, conditionLogOut)
+      if (!logOut) {
+        return
+      }
+      responseMessage(res, 200, "Logout user is success")
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
   }
   public register = async (req: Request, res: Response) => {
     const data = req.body;
@@ -111,7 +138,7 @@ export default class AuthController {
     const password = data.password;
     const email = data.email;
     try {
-      const [dataAuth,dataMail] = await Promise.all([
+      const [dataAuth, dataMail] = await Promise.all([
         authStatement.getAuth(username),
         authStatement.getMail(email)
       ])
@@ -140,11 +167,11 @@ export default class AuthController {
     try {
       const checkPass = await authStatement.getPassword(idUser)
       const isPassword = bcrypt.compareSync(data.current, checkPass[0].password_hash)
-      if(!checkPass){
-        return responseMessage(res,401,'User does not exist');
+      if (!checkPass) {
+        return responseMessage(res, 401, 'User does not exist');
       }
-      if(!isPassword){
-        return responseMessage(res,401,'Incorrect current password')
+      if (!isPassword) {
+        return responseMessage(res, 401, 'Incorrect current password')
       }
       const newPassword = encodePass(data.password);
       const passData = [
@@ -174,5 +201,45 @@ export default class AuthController {
     const { token: accessToken, expiredToken: expiredA } = createToken(idUser, "600s");
     responseData(res, 200, { accessToken, expiredA });
   };
-  public forgot = async () => {};
+  public forgot = async (req: Request, res: Response) => {
+    const data = req.body
+    try {
+      const getAuth = await authStatement.getAuth(data.username)
+      const getMail = await authStatement.getMail(data.mail)
+      if (getAuth.length === 0) {
+        return responseMessage(res, 404, "Username is incorrect")
+      }
+      if (getMail.length === 0) {
+        return responseMessage(res, 404, "Email is incorrect")
+      }
+      if (getAuth[0].idUser !== getMail[0].idUser) {
+        return responseMessage(res, 401, "Username or email is incorrect")
+      }
+      const newPass = createPass(10);
+      const pass_hash = encodePass(newPass);
+      const dataUpdate=convertData([{
+        password_hash:pass_hash
+      }])
+      const condition:ConditionType = {
+        conditionName:"username",
+        conditionMethod:"=",
+        value:data.username
+      }
+      const updatePassword = await statement.updateDataByCondition("auth",dataUpdate,condition)
+      if(!updatePassword){
+        return responseMessage(res,401,"")
+      }
+      const dataSendMail = {
+        toMail:data.mail,
+        subject:"New password",
+        content:`New password is ${newPass}`
+      }
+      handleSendMail(res,dataSendMail)
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  };
 }

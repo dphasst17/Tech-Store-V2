@@ -6,6 +6,7 @@ import type {
   ImageProductType,
   OrderDetailType,
   OrderType,
+  PaymentType,
   PostsType,
   ProductType,
   SaleDetailType,
@@ -30,6 +31,7 @@ export interface Database {
   auth: AuthDB;
   posts: PostsType;
   typePost:CategoryPostsType;
+  payment:PaymentType;
   products: ProductType;
   sale: SaleType;
   saleDetail: SaleDetailType;

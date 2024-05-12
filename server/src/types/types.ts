@@ -65,7 +65,8 @@ export interface TransportType{
   costs:number,
   method:string,
   edd:Date,
-  paymentStatus:'paid' | 'unpaid'
+  paymentStatus:'paid' | 'unpaid',
+  orderStatus:string
 }
 export interface TransportDetailType{
   idOrdDetail:number,
@@ -147,4 +148,12 @@ export interface CommentType{
   commentValue:string,
   idProduct:number,
   dateComment:string
+}
+
+export interface PaymentType{
+  id:number,
+  payment_id:string,
+  method:string,
+  total_price:number,
+  currency_code:string
 }

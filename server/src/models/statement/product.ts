@@ -1,5 +1,5 @@
 import { sql } from "kysely";
-import { jsonArrayFrom } from "kysely/helpers/mysql";
+import { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/mysql";
 import { db } from "models/connect";
 export default class ProductStatement {
   public getColumnByType = async (typeName: string) => {
@@ -22,9 +22,9 @@ export default class ProductStatement {
             .selectFrom("typedetail as td")
             .select(["id", "type", "name", "datatypes", "displayname", "displayorder"])
             .whereRef("td.type", "=", "type.nameType")
-            .where("td.displayorder","<",5)
+            .where("td.displayorder", "<", 5)
             .orderBy("td.displayorder asc")
-        ).as("detail")
+        ).as("detail"),
       ])
       .execute();
   };
@@ -47,7 +47,7 @@ export default class ProductStatement {
       .leftJoin("warehouse as w", "p.idProduct", "w.idProduct")
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
       .leftJoin("sale", "sd.idSale", "sale.idSale")
-      .where("p.status","=","show")
+      .where("p.status", "=", "show")
       .groupBy("p.idProduct")
       .execute();
   };
@@ -77,7 +77,7 @@ export default class ProductStatement {
       .leftJoin("sale", "sd.idSale", "sale.idSale")
       .leftJoin(`${table} as ${shortKey}`, "p.idProduct", `${shortKey}.idProduct`)
       .where("t.nameType", "=", table)
-      .where("p.status","=","show")
+      .where("p.status", "=", "show")
       .groupBy("p.idProduct")
       .execute();
   };
@@ -109,7 +109,7 @@ export default class ProductStatement {
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
       .leftJoin("sale", "sd.idSale", "sale.idSale")
       .where("p.idProduct", "=", idProduct)
-      .where("p.status","=","show")
+      .where("p.status", "=", "show")
       .execute();
   };
 
@@ -173,8 +173,37 @@ export default class ProductStatement {
       .execute();
   };
 
-  public findSaleEvent = async () => {
+  public findAllSaleEvent = async () => {
     return await db.selectFrom("sale").selectAll("sale").execute();
+  };
+  public findSale = async (date: string) => {
+    return db
+    .selectFrom("sale")
+    .select<string | any>((eb: any) => [
+      "sale.idSale",
+      "sale.start_date",
+      "sale.end_date",
+      "sale.title",
+      jsonArrayFrom(
+        eb
+          .selectFrom("saleDetail as sd")
+          .select((s: any) => [
+            "sd.id",
+            "sd.idProduct",
+            "sd.discount",
+            "p.nameProduct",
+            "p.price",
+            "p.imgProduct",
+            "type.nameType",
+            "p.brand"
+          ])
+          .leftJoin("products as p", "p.idProduct", "sd.idProduct")
+          .leftJoin("type", "p.idType", "type.idType")
+          .whereRef("sd.idSale", "=", "sale.idSale")
+      ).as("detail"),
+    ])
+    .where((eb: any) => eb("sale.start_date", "<=", date).or("sale.end_date", ">=", date))
+      .execute();
   };
 
   public findSaleDetail = async (idSale: number) => {

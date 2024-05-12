@@ -5,6 +5,7 @@ const router = express.Router();
 const orderController = new OrderController()
 router.get('/user',verifyToken,orderController.getByUser)
 router.post('/',verifyToken,orderController.insertOrder)
+router.post('/payment',verifyToken,orderController.insertPayment)
 router.patch('/',orderController.updateOrder)
 
 export default router

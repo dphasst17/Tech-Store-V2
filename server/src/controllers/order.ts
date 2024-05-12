@@ -37,11 +37,10 @@ export default class OrderController {
     });
     const insertData = await db.transaction().execute(async (trx) => {
       const insert = await trx.insertInto("ord").values(addData[0]).executeTakeFirst();
-
       const setFk = sql`SET FOREIGN_KEY_CHECKS=0`.execute(trx);
       const insertDetail = await trx
         .insertInto("ordDetail")
-        .columns(["idTrans", "idProduct", "countProduct", "discount", "status"])
+        .columns(["idTrans", "idProduct", "countProduct", "discount"])
         .expression((eb: any) =>
           eb
             .selectFrom("carts")
@@ -49,10 +48,7 @@ export default class OrderController {
               sql`${idTrans}`,
               "carts.idProduct",
               "countProduct",
-              sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0)`.as(
-                "discount"
-              ),
-              sql`"Chờ xác nhận"`,
+              sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0)`.as("discount")
             ])
             .leftJoin("products as p", "p.idProduct", "carts.idProduct")
             .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
@@ -68,6 +64,30 @@ export default class OrderController {
     }
     responseMessage(res, 201, "Order success");
   };
+  public insertPayment = async(request: Request, res: Response) => {
+    const req = request as RequestCustom
+    const idUser = req.idUser
+    const data = req.body
+    const appendId = data.map((d:any) => {
+      return {
+        ...d,
+        idUser:idUser
+      }
+    })
+    const dataInsert = convertData(appendId)
+    try{
+      const insert = await statement.insertData("payment",dataInsert)
+      if(!insert){
+        return responseMessage(res,401,"Insert payment is unsuccessful")
+      }
+      responseMessage(res,201,"Insert payment is success")
+    }
+    catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  };
   public updateOrder = async (req: Request, res: Response) => {
     const data = req.body;
     const valueUpdate = {
@@ -80,7 +100,7 @@ export default class OrderController {
       value: data.id,
     };
     try {
-      const updateStatus = await statement.updateDataByCondition("ordDetail", [valueUpdate], condition);
+      const updateStatus = await statement.updateDataByCondition("ord", [valueUpdate], condition);
       if (!updateStatus) {
         return responseMessage(res, 401, "Status update failed");
       }
@@ -106,8 +126,8 @@ export default class OrderController {
             "costs",
             sql`${new Date().toISOString().split("T")[0]}`.as("dateBuy"),
           ];
-          const insertOrderS = await statement.insertSubQuery(tableInsert, colInsert, tableSelect, colSelect, condition);
-          const insertOrderSDetail = await statement.insertSubQuery(tableInsertDetail,colInsertDetail,tableSelectDetail,colSelectDetail,condition);
+          await statement.insertSubQuery(tableInsert, colInsert, tableSelect, colSelect, condition);
+          await statement.insertSubQuery(tableInsertDetail,colInsertDetail,tableSelectDetail,colSelectDetail,condition);
         }
         if (data.status === "Thất bại") {
           const tableInsert = "ordf";
