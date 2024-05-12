@@ -3,6 +3,7 @@ import Laptop from './laptop'
 import NewProduct from './newProduct'
 import Post from './post'
 import Slideshow from './slide'
+import SaleEvent from './sale'
 
 const Home = () => {
   useEffect(() => {
@@ -10,6 +11,7 @@ const Home = () => {
   },[])
   return <div className='w-full h-auto flex flex-col items-center pt-2'>
     <Slideshow />
+    <SaleEvent />
     <NewProduct />
     <Laptop/>
     <Post />

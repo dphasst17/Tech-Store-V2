@@ -20,7 +20,6 @@ const SignIn = ({ handleAuth, setFormName }: { handleAuth: any, setFormName: Rea
         console.log(error); /* message err */
     };
     const onSuccess = (response: any) => {
-        console.log(response)
         handleAuth('login', { email: response.profileObj.email});
     };
     const { signIn } = useGoogleLogin({

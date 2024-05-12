@@ -7,6 +7,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     const [user,setUser] = useState<UserType | null>(null)
     const [isLogin,setIsLogin] = useState<boolean>(getLocalStorage('isLogs',false))
     const [product,setProduct] = useState<any[] | null>(null)
+    const [sale,setSale] = useState<any[] | null>(null)
     const [type,setType] = useState<any[] | null>(null)
     const [newProduct,setNewProduct] = useState<any[] | null>(null)
     const [post,setPost] = useState<any[] | null>(null)
@@ -16,6 +17,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
         <StateContext.Provider value={{
             user,setUser,
             product,setProduct,
+            sale,setSale,
             type,setType,
             newProduct,setNewProduct,
             post,setPost,

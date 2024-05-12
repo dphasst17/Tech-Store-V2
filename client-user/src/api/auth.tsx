@@ -37,13 +37,14 @@ export const authToken = async(token:string) => {
         },
     })
 }
-export const authUpdatePassword = async(current:string,password:string) => {
-    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/token`,{
+export const authUpdatePassword = async(token:string,data:{current:string,password:string}) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/password`,{
         method:"PATCH",
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization':`Bearer ${token}`
         },
-        body:JSON.stringify({current:current,password:password})
+        body:JSON.stringify(data)
     })
     .then(res => res.json())
 }

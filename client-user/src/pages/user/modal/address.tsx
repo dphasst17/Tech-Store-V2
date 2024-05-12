@@ -49,12 +49,12 @@ const ModalAddress = ({ setModalName }: Modals) => {
           user && setUser(user.map((u: UserType) => {
             return {
               ...u,
-              address: [{
+              address: [
+              ...u.address,{
                 idAddress: res.data.idAddress,
                 type: user && (user[0].address.length === 0 ? 'default' : 'extra'),
                 detail: `${resultAddress.details}, ${resultAddress.wards}, ${resultAddress.districts}, ${resultAddress.provinces}`
-              },
-              ...u.address]
+              }]
             }
           }))
         }
@@ -116,10 +116,10 @@ const ModalAddress = ({ setModalName }: Modals) => {
           </form>
         </ModalBody>
         <ModalFooter>
-          <Button color="danger" variant="light" onPress={() => { setModalName(""); onClose() }}>
+          <Button color="danger" variant="light" onPress={() => { setModalName && setModalName(""); onClose() }}>
             Close
           </Button>
-          <Button color="success" className="text-white font-bold" onClick={submitData}>Update</Button>
+          <Button color="success" className="text-white font-bold" onClick={submitData}>Create</Button>
         </ModalFooter>
       </>
     )}

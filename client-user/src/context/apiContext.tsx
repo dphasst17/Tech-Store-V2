@@ -7,10 +7,12 @@ import { getUser } from "../api/user";
 
 export const ApiContext = createContext({});
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
-    const { setIsLoading,setUser,isLogin,setPost,setNewProduct,setProduct, setType } = useContext(StateContext)
+    const { setSale,setIsLoading,setUser,isLogin,setPost,setNewProduct,setProduct, setType } = useContext(StateContext)
     const { data: dataType } = useFetchData('product', 'productGetAllType')
+    const { data: dataSale } = useFetchData('product', 'getSaleEvent')
     const { data:newProduct } = useFetchData('product','productGetNew')
     const { data:postAll } = useFetchData('posts','postGetAll')
+    useEffect(() => {dataSale && setSale(dataSale.data)},[dataSale])
     useEffect(() => {
         if (dataType) {
             setType(dataType.data);

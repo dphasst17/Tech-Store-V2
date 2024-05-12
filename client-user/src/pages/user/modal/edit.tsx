@@ -8,7 +8,7 @@ import { updateUser } from "../../../api/user";
 
 
 interface FormValue {
-  name: string,
+  nameUser: string,
   phone: string,
   email: string,
 }
@@ -17,7 +17,7 @@ const ModalEdit = ({ setModalName }: Modals) => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValue>()
   const onSubmit = async (data: FormValue) => {
     const changedKeys = (Object.keys(data) as (keyof FormValue)[]).filter((key: keyof FormValue) => {
-      const userKey = key === 'name' ? 'nameUser' : key;
+      const userKey = key;
       return user[0][userKey] !== data[key];
     });
     const token = await GetToken()
@@ -34,7 +34,7 @@ const ModalEdit = ({ setModalName }: Modals) => {
         if (res.status === 200) {
           setUser(user.map((u: any) => {
             const updatedUser = changedKeys.reduce((acc, key: keyof FormValue) => {
-              const userKey = key === 'name' ? 'nameUser' : key;
+              const userKey = key;
               return { ...acc, [userKey]: data[key] };
             }, { ...u });
             return updatedUser;
@@ -50,8 +50,8 @@ const ModalEdit = ({ setModalName }: Modals) => {
         <ModalHeader className="flex flex-col gap-1">Edit</ModalHeader>
         <ModalBody>
           <form className="w-full">
-            <Input {...register('name', { required: true })} type="text" label="Name" className="w-full my-2" radius="sm" defaultValue={user[0]?.nameUser} />
-            <Input {...register('phone', { required: true })} type="text" label="Name" className="w-full my-2" radius="sm" defaultValue={user[0]?.phone} />
+            <Input {...register('nameUser', { required: true })} type="text" label="Name" className="w-full my-2" radius="sm" defaultValue={user[0]?.nameUser} />
+            <Input {...register('phone', { required: true })} type="text" label="Phone" className="w-full my-2" radius="sm" defaultValue={user[0]?.phone} />
             <Input {...register('email', {
               required: true, pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -62,7 +62,7 @@ const ModalEdit = ({ setModalName }: Modals) => {
           </form>
         </ModalBody>
         <ModalFooter>
-          <Button color="danger" variant="light" onPress={() => { setModalName(""); onClose() }}>
+          <Button color="danger" variant="light" onPress={() => { setModalName && setModalName(""); onClose() }}>
             Close
           </Button>
           <Button onClick={() => { handleSubmit(onSubmit)() }} color="success" className="text-white font-bold">Update</Button>

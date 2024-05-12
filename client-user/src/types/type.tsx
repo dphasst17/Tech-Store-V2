@@ -68,5 +68,18 @@ export interface Auth {
     email?:string
 }
 export interface Modals {
-    setModalName: React.Dispatch<React.SetStateAction<string>>,
+    setModalName?: React.Dispatch<React.SetStateAction<string>>,
+}
+export interface OrderType{
+    fullName:string,
+    phone:string,
+    address:string,
+    method:string,
+    costs:number,
+    edd:string,
+    paymentStatus:"paid" | "unpaid"
+}
+export interface OrderInsertType{
+    order:OrderType[],
+    listId:number[]
 }

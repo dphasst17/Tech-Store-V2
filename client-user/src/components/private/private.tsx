@@ -1,11 +1,10 @@
-import { Navigate, useLocation } from 'react-router-dom';
-import { getLocalStorage } from '../../utils/localStorage';
+import { Navigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { StateContext } from '../../context/stateContext';
 
 const PrivateRoute = ({children}:{ children: React.ReactNode }) => {
-    const location = useLocation()
-    const isLoggedIn = getLocalStorage('chatLog',false) === true
-    sessionStorage.setItem("pathName",JSON.stringify(location.pathname));
-    return  isLoggedIn ? children : <Navigate to="/auth" />;
+    const {isLogin} = useContext(StateContext)
+    return  isLogin ? children : <Navigate to="/auth" />;
 
 };
 

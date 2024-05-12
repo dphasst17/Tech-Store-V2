@@ -2,6 +2,8 @@ import { Button, Input, ModalBody, ModalContent, ModalFooter, ModalHeader } from
 import { useForm } from "react-hook-form";
 /* import { GetToken } from "../../../utils/token"; */
 import { Modals } from "../../../types/type";
+import { GetToken } from "../../../utils/token";
+import { authUpdatePassword } from "../../../api/auth";
 
 
 interface FormValue {
@@ -11,14 +13,20 @@ interface FormValue {
 }
 const ModalPassword = ({setModalName}: Modals) => {
   const { register, handleSubmit} = useForm<FormValue>()
-  const onSubmit = (data: FormValue) => {
+  const onSubmit = async(data: FormValue) => {
     console.log(data)
-    /* const checkData = user?.every((u:any) => data.name !== u.name || data.email !== u.email)
-    const token = GetToken()
-    console.log(checkData)
-    console.log(token)
-     */
-    
+    if(data.confirm !== data.new){
+      alert("Confirm password does not match with password!")
+    }
+    const dataUpdate = {
+      current:data.current,
+      password:data.new
+    }
+    const token = await GetToken()
+    token && authUpdatePassword(token,dataUpdate)
+    .then(res => {
+      alert(res.message)
+    })    
   }
   return <ModalContent>
   {(onClose) => (

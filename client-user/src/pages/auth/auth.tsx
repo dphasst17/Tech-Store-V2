@@ -5,6 +5,7 @@ import { SaveToken } from "../../utils/token"
 import { setLocalStorage } from "../../utils/localStorage"
 import { useNavigate } from "react-router-dom"
 import { StateContext } from "../../context/stateContext"
+import SignUp from "./signUp"
 
 const Auth = () => {
   const {setIsLogin} = useContext(StateContext)
@@ -40,7 +41,7 @@ const Auth = () => {
     </div>
     <div className="authForm w-2/4 h-full flex items-center justify-center">
       {formName === "signIn" && <SignIn handleAuth={handleAuth} setFormName={setFormName} />}
-      {formName === "signUp" && ""}
+      {formName === "signUp" && <SignUp handleAuth={handleAuth} setFormName={setFormName} />}
       {formName === "forgot" && ""}
     </div>
   </div>

@@ -7,16 +7,19 @@ import SearchProduct from "../pages/product/search";
 import Auth from "../pages/auth/auth";
 import Cart from "../pages/cart";
 import User from "../pages/user";
+import Checkout from "../pages/checkout";
 const publicRoutes = [
     { path: "/", component: Home },
-    { path: "/auth",component:Auth},
-    { path: "/product",component:Product},
-    { path: "/search/:key",component:SearchProduct},
+    { path: "/auth", component: Auth },
+    { path: "/product", component: Product },
+    { path: "/search/:key", component: SearchProduct },
     { path: "/post/detail/:idPost/:name", component: PostsDetail },
-    { path: "/product/detail/:nameType/:idProduct",component:DetailProduct},
-    { path: "/post",component:Post},
-    { path: "/cart",component:Cart},
-    { path: "/user",component:User},
+    { path: "/product/detail/:nameType/:idProduct/:nameProduct", component: DetailProduct },
+    { path: "/post", component: Post },
 ];
-const privateRoutes:any =[]
-export { publicRoutes,privateRoutes };
+const privateRoutes: any = [
+    { path: "/cart", component: Cart },
+    { path: "/user", component: User },
+    { path: "/checkout", component: Checkout },
+]
+export { publicRoutes, privateRoutes };

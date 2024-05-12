@@ -19,7 +19,7 @@ const Cart = () => {
             {cart && cart.map((c: CartType) => <div
                 className={`relative  w-[48%]  rounded-md  text-zinc-700 my-1 cursor-pointer`}
                 key={`cart-detail-${c.idCart}`}>
-                <Product_layout_02 data={c} />
+                <Product_layout_02 data={c} isButton={true}/>
                 <Button size="sm" color="danger" isIconOnly onClick={() => {removeItemCart([c.idCart])}}>
                     <RiDeleteBinFill />
                 </Button>
