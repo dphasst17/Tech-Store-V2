@@ -67,7 +67,7 @@ const SignIn = ({ handleAuth, setFormName }: { handleAuth: any, setFormName: Rea
         </form>
         <div className="w-3/5 h-[30px] text-blue-500 flex justify-between">
             <button onClick={() => { setIsShow(!isShow) }}>{isShow ? 'Hide' : 'Show'} password</button>
-            <button>Forgot password?</button>
+            <button onClick={() => {setFormName("forgot")}}>Forgot password?</button>
         </div>
         <Button color="primary" size="sm" radius="sm" onClick={() => { handleSubmit(onSubmit)() }}>Sign in</Button>
         <p className="text-sm font-light text-gray-500 dark:text-gray-400 my-2">

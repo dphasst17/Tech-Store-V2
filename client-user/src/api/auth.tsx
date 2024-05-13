@@ -8,6 +8,16 @@ export const authLogin = async(data:{username?:string,password?:string,email?:st
     })
     .then(res => res.json())
 }
+export const authLogout = async(token:string) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/logout`,{
+        method:"POST",
+        headers:{
+            'Content-Type':'application/json',
+            'Authorization':`Bearer ${token}`
+        },
+    })
+    .then(res => res.json())
+}
 export const authRegister = async(data:{username:string,password:string,email:string}) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/auth/register`,{
         method:"POST",

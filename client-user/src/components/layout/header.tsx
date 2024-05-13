@@ -11,15 +11,16 @@ import { StateContext } from "../../context/stateContext";
 import { CartContext } from "../../context/cartContext";
 import { CartType } from "../../types/type";
 import Product_layout_02 from "../../pages/product/layout/product_layout_02";
-import { RemoveToken } from "../../utils/token";
+import { GetToken, RemoveToken } from "../../utils/token";
 import { removeLocalStorage } from "../../utils/localStorage";
+import { authLogout } from "../../api/auth";
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLogin,setIsLogin } = useContext(StateContext)
+  const { isLogin, setIsLogin } = useContext(StateContext)
   const { cart } = useContext(CartContext)
   const [toggle, setToggle] = useState(true)
-  const [inputSearch,setInputSearch] = useState<string>("");
+  const [inputSearch, setInputSearch] = useState<string>("");
   const listNav = [
     {
       id: 1,
@@ -46,12 +47,18 @@ const Header = () => {
       icon: MdOutlineContactPhone
     }
   ]
-  const handleLogout = () => {
-    RemoveToken('aTk')
-    RemoveToken('rTk')
-    removeLocalStorage('isLogs')
-    setIsLogin(false)
-    navigate('/auth')
+  const handleLogout = async () => {
+    const token = await GetToken()
+    token && authLogout(token)
+      .then(res => {
+        if (res.status === 200) {
+          RemoveToken('aTk')
+          RemoveToken('rTk')
+          removeLocalStorage('isLogs')
+          setIsLogin(false)
+          navigate('/auth')
+        }
+      })
   }
   const handleSearch = () => {
     console.log("test")
@@ -74,13 +81,13 @@ const Header = () => {
     {/* Search */}
     <nav className={`w-[35%] h-full hidden md:flex justify-around items-center bg-zinc-900 bg-opacity-60 ${toggle ? 'translate-y-0' : 'translate-y-20'} transition-all rounded-lg`}>
       <Input
-      onChange={(e) => setInputSearch(e.target.value)}
-      onKeyDown={(e:any) => {if(e.key === "Enter"){handleSearch()}}} 
-      type="search" 
-      radius="sm" 
-      className="w-4/5" 
-      placeholder="Search..." />
-      
+        onChange={(e) => setInputSearch(e.target.value)}
+        onKeyDown={(e: any) => { if (e.key === "Enter") { handleSearch() } }}
+        type="search"
+        radius="sm"
+        className="w-4/5"
+        placeholder="Search..." />
+
       <Button onClick={handleSearch} radius="sm" className="w-[10%] bg-zinc-800 hover:bg-opacity-100" isIconOnly>
         <BiSearchAlt2 className="text-[20px] text-white" />
       </Button>
@@ -95,7 +102,7 @@ const Header = () => {
         </DropdownTrigger>
         <DropdownMenu closeOnSelect={true} className="w-[500px] h-[450px]">
           {cart && cart.slice(0, 4).map((c: CartType) => <DropdownItem key={c.idCart}>
-            <Product_layout_02 data={c} isButton={true}/>
+            <Product_layout_02 data={c} isButton={true} />
           </DropdownItem>)}
           <DropdownItem className="flex justify-center items-center" variant="light">
             <Button className="mx-auto" onClick={() => { navigate('/cart') }}>Detail</Button>
@@ -103,7 +110,7 @@ const Header = () => {
         </DropdownMenu>
       </Dropdown>
       }
-      {isLogin && <Button radius="sm" isIconOnly><IoIosNotifications className="w-4/5 h-3/5"  /></Button>}
+      {isLogin && <Button radius="sm" isIconOnly><IoIosNotifications className="w-4/5 h-3/5" /></Button>}
       {isLogin && <Dropdown placement="top-end" offset={20} className="bg-zinc-700">
         <DropdownTrigger>
           <Button radius="sm" isIconOnly>
@@ -111,7 +118,7 @@ const Header = () => {
           </Button>
         </DropdownTrigger>
         <DropdownMenu closeOnSelect={true}>
-          <DropdownItem onClick={() => {navigate('/user');}}>User</DropdownItem>
+          <DropdownItem onClick={() => { navigate('/user'); }}>User</DropdownItem>
           <DropdownItem variant="light">
             <Button size="sm" radius="sm" color="danger" onClick={handleLogout}>Logout</Button>
           </DropdownItem>
