@@ -20,7 +20,7 @@ const SignIn = ({ handleAuth, setFormName }: { handleAuth: any, setFormName: Rea
         console.log(error); /* message err */
     };
     const onSuccess = (response: any) => {
-        handleAuth('login', { email: response.profileObj.email});
+        handleAuth('login', { email: response.profileObj.email });
     };
     const { signIn } = useGoogleLogin({
         onSuccess,
@@ -39,14 +39,14 @@ const SignIn = ({ handleAuth, setFormName }: { handleAuth: any, setFormName: Rea
             id: 2,
             name: 'Google',
             icon: GoogleIcon,
-            handleClick:signIn
+            handleClick: signIn
 
         },
         {
             id: 3,
             name: 'Github',
             icon: GithubIcon,
-            handleClick:""
+            handleClick: ""
         }
     ]
     const onSubmit = (data: Auth) => {
@@ -63,11 +63,14 @@ const SignIn = ({ handleAuth, setFormName }: { handleAuth: any, setFormName: Rea
         <h1 className="text-zinc-700 text-[30px] font-bold font-ps-2 my-6">SIGN IN</h1>
         <form className="w-3/5">
             <Input {...register('username', { required: true })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Username" type="text" />
-            <Input {...register('password', { required: true })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Password" type={isShow ? 'text' : 'password'} />
+            <Input {...register('password', { required: true })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Password" 
+            type={isShow ? 'text' : 'password'} 
+            onKeyDown={(e:any) => {e.key==="Enter" && handleSubmit(onSubmit)()}}
+            />
         </form>
         <div className="w-3/5 h-[30px] text-blue-500 flex justify-between">
             <button onClick={() => { setIsShow(!isShow) }}>{isShow ? 'Hide' : 'Show'} password</button>
-            <button onClick={() => {setFormName("forgot")}}>Forgot password?</button>
+            <button onClick={() => { setFormName("forgot") }}>Forgot password?</button>
         </div>
         <Button color="primary" size="sm" radius="sm" onClick={() => { handleSubmit(onSubmit)() }}>Sign in</Button>
         <p className="text-sm font-light text-gray-500 dark:text-gray-400 my-2">

@@ -20,7 +20,9 @@ const Forgot = ({ handleAuth,setFormName }: { handleAuth:any,setFormName: React.
           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
           message: "Invalid email address"
         }
-      })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Email" type="text" />
+      })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Email" type="text" 
+      onKeyDown={(e:any) => {e.key==="Enter" && handleSubmit(onSubmit)()}}
+      />
       {errors?.email && <Tooltip content={errors.email.message}></Tooltip>}
     </form>
     <Button color="primary" size="sm" radius="sm" onClick={() => { handleSubmit(onSubmit)() }}>Reset Password</Button>

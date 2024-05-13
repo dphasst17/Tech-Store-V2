@@ -29,7 +29,9 @@ const SignUp = ({ handleAuth,setFormName }: { handleAuth:any,setFormName: React.
           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
           message: "Invalid email address"
         }
-      })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Email" type="text" />
+      })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Email" type="text"
+      onKeyDown={(e:any) => {e.key === "Enter" && handleSubmit(onSubmit)()}}
+      />
       {errors?.email && <Tooltip content={errors.email.message}></Tooltip>}
     </form>
     <div className="w-3/5 h-[30px] text-blue-500 flex justify-between">
