@@ -1,10 +1,12 @@
 import { createContext, useState } from "react";
 import { getLocalStorage } from "../utils/localStorage";
-import { UserType } from "../types/type";
+import { OrderDetailType, OrderType, UserType } from "../types/type";
 
 export const StateContext = createContext<any>({});
 export const StateProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user,setUser] = useState<UserType | null>(null)
+    const [user,setUser] = useState<UserType | null>(null);
+    const [order,setOrder] = useState<OrderType | null>(null);
+    const [purchase,setPurchase] = useState<OrderDetailType[] | null>(null)
     const [isLogin,setIsLogin] = useState<boolean>(getLocalStorage('isLogs',false))
     const [product,setProduct] = useState<any[] | null>(null)
     const [sale,setSale] = useState<any[] | null>(null)
@@ -16,6 +18,8 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     return (
         <StateContext.Provider value={{
             user,setUser,
+            order,setOrder,
+            purchase,setPurchase,
             product,setProduct,
             sale,setSale,
             type,setType,

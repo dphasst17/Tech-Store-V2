@@ -108,7 +108,7 @@ const InfoCheckout = () => {
       insertPayment(token,paymentDetail)
     )
   }
-  return <div className="info-checkout w-[30%] h-full flex flex-col items-center">
+  return <div className="info-checkout w-[95%] sm:w-4/5 md:w-2/5 lg:w-[30%] h-full flex flex-col items-center">
     {user && user.map((u: UserType) => <form key={`form-checkout-${u.idUser}`} className="w-full flex flex-wrap justify-between items-center">
       <Input
         {...register('nameUser', { required: true })}

@@ -4,44 +4,53 @@ import { StateContext } from "./stateContext";
 import { productGetByType } from "../api/product";
 import { GetToken } from "../utils/token";
 import { getUser } from "../api/user";
+import { getOrderByUser, getPurchaseOrder } from "../api/order";
 
 export const ApiContext = createContext({});
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
-    const { setSale,setIsLoading,setUser,isLogin,setPost,setNewProduct,setProduct, setType } = useContext(StateContext)
+    const { setPurchase,setOrder,setSale, setUser, isLogin, setPost, setNewProduct, setProduct, setType } = useContext(StateContext)
     const { data: dataType } = useFetchData('product', 'productGetAllType')
     const { data: dataSale } = useFetchData('product', 'getSaleEvent')
-    const { data:newProduct } = useFetchData('product','productGetNew')
-    const { data:postAll } = useFetchData('posts','postGetAll')
-    useEffect(() => {dataSale && setSale(dataSale.data)},[dataSale])
+    const { data: newProduct } = useFetchData('product', 'productGetNew')
+    const { data: postAll } = useFetchData('posts', 'postGetAll')
+    useEffect(() => { dataSale && setSale(dataSale.data) }, [dataSale])
     useEffect(() => {
         if (dataType) {
             setType(dataType.data);
             const tempProduct: any[] = [];
             Promise.all(dataType.data.map((e: any) => productGetByType(e.nameType)
-            .then(res => tempProduct.push({idType:e.idType,type: e.nameType, data: res.data }))))
-            .then(() => {
-                setProduct((prevProduct: any) => (prevProduct !== null ? [...prevProduct, ...tempProduct] : [...tempProduct]));
-            });
+                .then(res => tempProduct.push({ idType: e.idType, type: e.nameType, data: res.data }))))
+                .then(() => {
+                    setProduct((prevProduct: any) => (prevProduct !== null ? [...prevProduct, ...tempProduct] : [...tempProduct]));
+                });
         }
     }, [dataType])
     useEffect(() => {
         newProduct && setNewProduct(newProduct.data)
         postAll && setPost(postAll.data)
-    },[newProduct,postAll])
+    }, [newProduct, postAll])
     useEffect(() => {
-        const fetchUser = async() => {
+        const fetchUser = async () => {
             const token = await GetToken()
-            setIsLoading(true)
-            token && getUser(token)
-            .then(res => {
-                setIsLoading(false)
-                res.status === 200 && setUser(res.data)
-            })
+            token && (
+                getUser(token)
+                    .then(res => {
+                        res.status === 200 && setUser(res.data)
+                    }),
+                getOrderByUser(token)
+                .then(res => {
+                    res.status === 200 && setOrder(res.data)
+                }),
+                getPurchaseOrder(token)
+                .then(res => {
+                    res.status === 200 && setPurchase(res.data)
+                })
+            )
         }
-        if(isLogin){
+        if (isLogin) {
             fetchUser()
         }
-    },[isLogin])
+    }, [isLogin])
     return (
         <ApiContext.Provider value={{}}>
             {children}

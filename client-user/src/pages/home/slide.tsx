@@ -86,7 +86,7 @@ const  Slideshow = () => {
         <input
           type="text"
           className="w-2/4 md:w-4/5 h-3/5 rounded-lg bg-zinc-900 text-white px-2 outline-none"
-          defaultValue={"https://dinhphat.tech"}
+          defaultValue={"Tech Store Version II"}
         />
         <div className="extension w-[30%] md:w-[12%] h-full flex justify-around items-center">
           <BsPlusLg className="w-[20px] h-[20px] text-white" />

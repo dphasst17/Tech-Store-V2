@@ -13,11 +13,11 @@ const Cart = () => {
     const addToList = (id: number) => {
         setListCheckOut(listCheckOut.includes(id) ? listCheckOut.filter((f: number) => f !== id) : [...listCheckOut, id])
     }
-    return <div className="w-full h-screen min-h-[90vh] flex flex-wrap justify-around">
+    return <div className="w-full h-screen min-h-[90vh] flex flex-wrap flex-row-reverse lg:flex-row justify-around">
         <div className="w-full h-[10%] text-zinc-900 font-bold font-ps-2 text-[35px] flex justify-center items-center">CART</div>
-        <div className="cart_layout_first w-3/5 h-4/5 flex flex-wrap justify-between content-start">
+        <div className="cart_layout_first w-full sm:w-4/5 lg:w-3/5 h-4/5 flex flex-wrap justify-center lg:justify-between content-start">
             {cart && cart.map((c: CartType) => <div
-                className={`relative  w-[48%]  rounded-md  text-zinc-700 my-1 cursor-pointer`}
+                className={`relative w-4/5 lg:w-[48%]  rounded-md  text-zinc-700 my-1 cursor-pointer`}
                 key={`cart-detail-${c.idCart}`}>
                 <Product_layout_02 data={c} isButton={true}/>
                 <Button size="sm" color="danger" isIconOnly onClick={() => {removeItemCart([c.idCart])}}>
@@ -30,7 +30,7 @@ const Cart = () => {
 
             </div>)}
         </div>
-        <div className="check_out_demo w-1/5 h-4/5 flex flex-col items-center justify-start pt-2">
+        <div className="check_out_demo w-full sm:w-4/5 lg:w-1/5 h-[200px] lg:h-4/5 flex flex-col items-center justify-start pt-2">
             <div className="w-4/5 flex flex-col justify-around min-w-[250px] h-[80px] text-zinc-900 rounded-md">
                 <div className="count w-full flex justify-between bg-zinc-900 text-white rounded-md p-2">
                     Total count:

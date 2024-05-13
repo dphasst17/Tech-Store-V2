@@ -70,7 +70,7 @@ export interface Auth {
 export interface Modals {
     setModalName?: React.Dispatch<React.SetStateAction<string>>,
 }
-export interface OrderType{
+export interface OrderDataType{
     fullName:string,
     phone:string,
     address:string,
@@ -80,6 +80,32 @@ export interface OrderType{
     paymentStatus:"paid" | "unpaid"
 }
 export interface OrderInsertType{
-    order:OrderType[],
+    order:OrderDataType[],
     listId:number[]
+}
+export interface OrderType{
+    idOrder:string,
+    idShipper:string | null,
+    idUser:string,
+    fullName:string,
+    phone:string,
+    address:string,
+    method:string,
+    cost: 0.85 | 0.5,
+    edd:string,
+    paymentStatus:"paid" | "unpaid",
+    orderStatus:string,
+    detail:OrderDetailType[]
+}
+export interface OrderDetailType{
+    id?:string,
+    idOrderDetail?:string,
+    idOrder:string,
+    idProduct:number,
+    imgProduct?:string,
+    nameProduct?:string,
+    price:number,
+    discount:number,
+    countProduct:number
+
 }

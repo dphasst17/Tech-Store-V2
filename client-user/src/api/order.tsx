@@ -21,6 +21,16 @@ export const getOrderByUser = async(token:string) => {
     })
     .then(res => res.json())
 }
+export const getPurchaseOrder = async(token:string) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/order/purchase`,{
+        method:"GET",
+        headers:{
+            'Content-Type':'application/json',
+            'Authorization':`Bearer ${token}`
+        }
+    })
+    .then(res => res.json())
+}
 export const insertPayment = async(token:string,data:any) => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/order/payment`,{
         method:"POST",

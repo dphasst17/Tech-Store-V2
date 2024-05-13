@@ -12,11 +12,11 @@ const ListItem = () => {
   useEffect(() => {
     listCheckOut.length === 0 && navigate('/cart')
   }, [listCheckOut])
-  return <div className="listItem-checkout w-3/5 h-full flex flex-wrap justify-between content-start">
+  return <div className="listItem-checkout w-full sm:w-4/5 md:w-2/5 lg:w-3/5 h-full flex flex-wrap justify-between content-start">
     {
       cart && cart.filter((c: CartType) => listCheckOut.includes(c.idCart))
         .map((c: CartType) => <div
-          className={`relative  w-[48%] rounded-md  text-zinc-700 my-1 cursor-pointer`}
+          className={`relative w-[95%] lg:w-[48%] rounded-md  text-zinc-700 my-1 cursor-pointer`}
           key={`checkout-${c.idCart}`}>
           <Product_layout_02 data={c} isButton={false} />
         </div>

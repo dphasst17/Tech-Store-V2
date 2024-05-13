@@ -64,11 +64,11 @@ const Header = () => {
     console.log("test")
     inputSearch !== "" && navigate(`/search/${inputSearch}`)
   }
-  return <header className={`w-[98vw] h-[7vh] flex justify-around transition-all fixed bottom-2 ${toggle ? 'z-40' : 'z-0'} rounded-md`}>
-    <div onClick={() => { setToggle(!toggle) }} className="w-[3%] h-4/5 my-auto flex items-center justify-center bg-zinc-900 rounded-md">
+  return <header className={`w-[98vw] h-[18vh] ssm:h-[16vh] md:h-[7vh] flex flex-wrap justify-between sm:justify-around content-around transition-all fixed bottom-2 z-50 rounded-md`}>
+    <div onClick={() => { setToggle(!toggle) }} className="min-w-[50px] md:w-[5%] lg:w-[3%] h-4/5 max-h-[30px] md:max-h-[50px] my-auto flex items-center justify-center bg-zinc-900 rounded-md">
       <FaCaretDown className={`text-white w-3/5 h-3/5 cursor-pointer ${toggle ? 'rotate-0' : 'rotate-180'} transition-all`} />
     </div>
-    <nav className={`w-full md:w-[45%] h-full flex justify-around items-center bg-zinc-900 bg-opacity-60 ${toggle ? 'translate-y-0' : 'translate-y-20'} transition-all rounded-lg`}>
+    <nav className={`w-[98%] ssm:w-[85%] sm:w-[90%] md:w-[35%] lg:w-[45%] h-[30%] ssn:h-2/5 md:h-full flex justify-around items-center bg-zinc-900 bg-opacity-60 ${toggle ? 'translate-y-0' : 'translate-y-60'} transition-all rounded-lg`}>
       {listNav.map((n: any) => <div
         key={`header-${n.id}`}
         onClick={() => { navigate(n.url) }}
@@ -79,7 +79,7 @@ const Header = () => {
       </div>)}
     </nav>
     {/* Search */}
-    <nav className={`w-[35%] h-full hidden md:flex justify-around items-center bg-zinc-900 bg-opacity-60 ${toggle ? 'translate-y-0' : 'translate-y-20'} transition-all rounded-lg`}>
+    <nav className={`w-[55%] sm:w-3/4 md:w-[35%] h-2/5 md:h-full flex justify-around items-center bg-zinc-900 bg-opacity-60 ${toggle ? 'translate-y-0' : 'translate-y-60'} transition-all rounded-lg`}>
       <Input
         onChange={(e) => setInputSearch(e.target.value)}
         onKeyDown={(e: any) => { if (e.key === "Enter") { handleSearch() } }}
@@ -92,11 +92,11 @@ const Header = () => {
         <BiSearchAlt2 className="text-[20px] text-white" />
       </Button>
     </nav>
-    <nav className={`w-[10%] h-full hidden md:flex justify-around items-center bg-zinc-900 bg-opacity-60 ${toggle ? 'translate-y-0' : 'translate-y-20'} transition-all rounded-lg`}>
+    <nav className={`w-[35%] ssm:w-1/5 md:w-[20%] lg:w-[15%] xl:w-[10%] h-2/5 md:h-full flex justify-around items-center bg-zinc-900 bg-opacity-60 ${toggle ? 'translate-y-0' : 'translate-y-60'} transition-all rounded-lg`}>
       {!isLogin && <Button radius="sm" color="danger" onClick={() => { navigate('/auth') }}>Login</Button>}
       {isLogin && <Dropdown placement="top-end" offset={20} className="relative bg-zinc-700">
         <DropdownTrigger className="fixed">
-          <Button radius="sm" isIconOnly className="relative">
+          <Button radius="sm" isIconOnly className="relative !hidden sm:!block">
             <AiOutlineShoppingCart className="w-4/5 h-3/5" />
           </Button>
         </DropdownTrigger>
