@@ -27,11 +27,11 @@ export default class OrderController {
     const req = request as RequestCustom;
     const idUser = req.idUser;
     const data = req.body;
-    const idTrans = `${idUser}${month}${year}-${randomText(4)}`;
+    const idOrder = `${idUser}${month}${year}-${randomText(4)}`;
     const addData = data.order.map((c: any) => {
       return {
         ...c,
-        idTrans: idTrans,
+        idOrder: idOrder,
         idUser: idUser,
       };
     });
@@ -45,7 +45,7 @@ export default class OrderController {
           eb
             .selectFrom("carts")
             .select([
-              sql`${idTrans}`,
+              sql`${idOrder}`,
               "carts.idProduct",
               "countProduct",
               sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0)`.as("discount")
@@ -154,4 +154,9 @@ export default class OrderController {
       };
     }
   };
+  public getPurchaseOrderByUser = async(request: Request, res: Response) => {
+    const req = request as RequestCustom;
+    const idUser = req.idUser
+    handleFindData(res,order.getPurchaseOrderByUser(idUser))
+  }
 }

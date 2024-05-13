@@ -7,7 +7,7 @@ export default class OrderStatement {
     return await db
       .selectFrom("ord as t")
       .select<any>((eb: any) => [
-        "t.idTrans",
+        "t.idOrder",
         "idShipper",
         "idUser",
         "fullName",
@@ -22,18 +22,26 @@ export default class OrderStatement {
           eb
             .selectFrom("ordDetail as td")
             .select((c:any) => [
-                "idTransDetail", "idProduct", "countProduct", "discount", "status",
-                jsonObjectFrom(
-                    c.selectFrom("products")
-                    .select(["nameProduct","price","imgProduct"])
-                    .whereRef("td.idProduct","=","products.idProduct")
-                ).as("info")
+                "idOrdDetail", "td.idProduct", "countProduct", "discount",
+                "p.nameProduct","p.price","p.imgProduct"
             ])
-            .whereRef("td.idTrans", "=", "t.idTrans")
+            .innerJoin("products as p","p.idProduct","td.idProduct")
+            .whereRef("td.idOrder", "=", "t.idOrder")
         ).as("detail")
       ])
       .where("idUser", "=", `${idUser}`)
       .execute();
   };
-  public getTransportDetail = async () => {};
+  public getPurchaseOrderByUser = async(idUser:string) => {
+
+    return await db.selectFrom("ordsDetail as osd")
+    .select(["osd.id","osd.idOrder","osd.idProduct","p.nameProduct","p.imgProduct","p.price","osd.countProduct","osd.discount"])
+    .innerJoin("ords","ords.idBill","osd.idOrder")
+    .leftJoin("products as p","p.idProduct","osd.idProduct")
+    .where("ords.idUser","=",idUser)
+    .execute()
+  }
+  public getTransportDetail = async (idOrder:string) => {
+
+  };
 }
