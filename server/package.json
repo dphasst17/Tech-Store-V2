@@ -17,7 +17,8 @@
     "@types/jsdom": "^21.1.6",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/nodemailer": "^6.4.15",
-    "kysely-migrate": "^0.0.16"
+    "kysely-migrate": "^0.0.16",
+    "nock": "^14.0.0-beta.6"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -33,6 +34,7 @@
     "jsdom": "^24.0.0",
     "jsonwebtoken": "^9.0.2",
     "kysely": "^0.27.3",
+    "mock-aws-s3": "^4.0.2",
     "mongodb": "^6.5.0",
     "mysql2": "^3.9.7",
     "nodemailer": "^6.9.13",
