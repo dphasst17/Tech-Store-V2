@@ -7,7 +7,14 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "baseUrl": "./src",
+    "types":[]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "node_modules/bun-types/globals.d.ts",
+    "node_modules/bun-types/overrides.d.ts",
+    "node_modules/typescript/lib/lib.dom.d.ts",
+    "node_modules/@types/node/module.d.ts"
+  ]
 }
