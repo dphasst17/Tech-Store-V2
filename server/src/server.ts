@@ -1,4 +1,5 @@
-import express, { type Request, type Response } from "express";
+
+import express from "express";
 import rateLimit from "express-rate-limit";
 import productRoute from "./routes/product";
 import authRoute from "./routes/auth";
@@ -45,7 +46,7 @@ app.use(express.json());
 
 
 
-app.get("/", (req:Request, res:Response) => {
+app.get("/", (req, res) => {
   res.status(200).json({status:200,message:"Hello World!"});
 });
 app.use('/api/product',productRoute)
