@@ -1,7 +1,5 @@
 import nodemailer from 'nodemailer'
 import { OAuth2Client } from 'google-auth-library'
-import dotenv from "dotenv";
-dotenv.config();
 
 
 export const handleSendMail = (res:any, data:any) => {

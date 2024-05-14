@@ -1,12 +1,11 @@
 import type { Request, Response } from "express";
 import PostStatement from "models/statement/posts";
 import Statements, { type ConditionType } from "models/statement/statement";
-import jsdom from "jsdom";
 import { responseData, responseMessageData } from "utils/response";
 import { convertData, handleChangeData, handleFindData } from "utils/utils";
 import type { RequestCustom } from "types/types";
 
-const { JSDOM } = jsdom;
+
 const statement = new Statements();
 const postStatement = new PostStatement();
 export default class PostsController {

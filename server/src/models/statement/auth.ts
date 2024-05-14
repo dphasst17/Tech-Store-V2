@@ -1,5 +1,4 @@
-import { db } from "models/connect"
-
+import { db } from "models/connect";
 export default class AuthStatement{
     public getAuth = async(username:string) => {
         return await db.selectFrom('auth')
