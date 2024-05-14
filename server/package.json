@@ -8,7 +8,7 @@
     "db:stop": "docker-compose down",
     "db:shutdown": "wsl --shutdown",
     "start": "bun --watch run src/server.ts",
-    "build": "bun build ./src/**/*.ts ./src/server.ts --outdir ./build"
+    "build": "bun build ./src/**/*.ts ./src/server.ts --outdir ./build --target bun"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
