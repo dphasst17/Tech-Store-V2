@@ -2,6 +2,7 @@ import type { AuthDB } from "types/auth";
 import type {
   CartType,
   CategoryPostsType,
+  CommentPostType,
   CommentType,
   ImageProductType,
   OrderDetailType,
@@ -25,6 +26,7 @@ export interface Database {
   ords: OrderType;
   carts: CartType;
   comments: CommentType;
+  commentPost:CommentPostType,
   ordf: OrderType;
   ordfDetail: OrderDetailType;
   imageProduct: ImageProductType;

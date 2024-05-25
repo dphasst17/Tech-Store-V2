@@ -17,7 +17,6 @@ export default class UserStatement {
               "idCart",
               "idProduct",
               "countProduct",
-      
               jsonArrayFrom(
                 c
                   .selectFrom("products as p")

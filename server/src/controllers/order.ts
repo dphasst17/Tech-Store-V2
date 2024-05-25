@@ -17,7 +17,7 @@ const randomText = (length: number) => {
   return crypto.randomBytes(length).toString("hex");
 };
 export default class OrderController {
-  public getAll = async () => {};
+  public getAll = async () => { };
   public getByUser = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;
@@ -36,26 +36,41 @@ export default class OrderController {
       };
     });
     const insertData = await db.transaction().execute(async (trx) => {
-      const insert = await trx.insertInto("ord").values(addData[0]).executeTakeFirst();
+      const formatData = convertData(addData)
+      const insert = await statement.insertData("ord", formatData)
       const setFk = sql`SET FOREIGN_KEY_CHECKS=0`.execute(trx);
-      const insertDetail = await trx
-        .insertInto("ordDetail")
-        .columns(["idTrans", "idProduct", "countProduct", "discount"])
-        .expression((eb: any) =>
-          eb
-            .selectFrom("carts")
-            .select([
-              sql`${idOrder}`,
-              "carts.idProduct",
-              "countProduct",
-              sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0)`.as("discount")
-            ])
-            .leftJoin("products as p", "p.idProduct", "carts.idProduct")
-            .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
-            .leftJoin("sale", "sd.idSale", "sale.idSale")
-            .where("carts.idCart", "in", data.listId)
-        )
-        .execute();
+      const tableInsert = "ordDetail";
+      const colInsert = ["idOrder", "idProduct", "countProduct", "discount"]
+      const tableSelect = "carts"
+      const colSelect = [
+        sql`${idOrder}`,
+        "carts.idProduct",
+        "carts.countProduct",
+        sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0)`.as("discount")
+      ]
+      const conditionDetail: ConditionType = {
+        conditionName: "carts.idCart",
+        conditionMethod: "in",
+        value: data.listId
+      }
+      const join = [
+        {
+          table: "products as p",
+          key1: "p.idProduct",
+          key2: "carts.idProduct"
+        },
+        {
+          table: "saleDetail as sd",
+          key1: "p.idProduct",
+          key2: "sd.idProduct"
+        },
+        {
+          table: "sale",
+          key1: "sd.idSale",
+          key2: "sale.idSale"
+        }
+      ]
+      const insertDetail = await statement.insertSubQuery(tableInsert, colInsert, tableSelect, colSelect, conditionDetail, join)
       const rmFk = sql`SET FOREIGN_KEY_CHECKS=1`.execute(trx);
       return { insert, setFk, insertDetail, rmFk };
     });
@@ -64,23 +79,23 @@ export default class OrderController {
     }
     responseMessage(res, 201, "Order success");
   };
-  public insertPayment = async(request: Request, res: Response) => {
+  public insertPayment = async (request: Request, res: Response) => {
     const req = request as RequestCustom
     const idUser = req.idUser
     const data = req.body
-    const appendId = data.map((d:any) => {
+    const appendId = data.map((d: any) => {
       return {
         ...d,
-        idUser:idUser
+        idUser: idUser
       }
     })
     const dataInsert = convertData(appendId)
-    try{
-      const insert = await statement.insertData("payment",dataInsert)
-      if(!insert){
-        return responseMessage(res,401,"Insert payment is unsuccessful")
+    try {
+      const insert = await statement.insertData("payment", dataInsert)
+      if (!insert) {
+        return responseMessage(res, 401, "Insert payment is unsuccessful")
       }
-      responseMessage(res,201,"Insert payment is success")
+      responseMessage(res, 201, "Insert payment is success")
     }
     catch {
       (errors: any) => {
@@ -108,7 +123,7 @@ export default class OrderController {
         const colInsertDetail = ["idOrder", "idProduct", "countProduct", "discount"];
         const tableSelect = "ord";
         const tableSelectDetail = "ordDetail";
-        const colSelectDetail = ["idTrans","idProduct","countProduct","discount"]
+        const colSelectDetail = ["idTrans", "idProduct", "countProduct", "discount"]
         const condition: ConditionType = {
           conditionName: "idTrans",
           conditionMethod: "=",
@@ -117,7 +132,7 @@ export default class OrderController {
         if (data.status === "Thành công") {
           const tableInsert = "ords";
           const tableInsertDetail = "ordsDetail";
-          const colInsert = ["idBill","idUser","idShipper","infoOrder","costs","dateBuy"]
+          const colInsert = ["idBill", "idUser", "idShipper", "infoOrder", "costs", "dateBuy"]
           const colSelect = [
             "idTrans",
             "idUser",
@@ -127,12 +142,12 @@ export default class OrderController {
             sql`${new Date().toISOString().split("T")[0]}`.as("dateBuy"),
           ];
           await statement.insertSubQuery(tableInsert, colInsert, tableSelect, colSelect, condition);
-          await statement.insertSubQuery(tableInsertDetail,colInsertDetail,tableSelectDetail,colSelectDetail,condition);
+          await statement.insertSubQuery(tableInsertDetail, colInsertDetail, tableSelectDetail, colSelectDetail, condition);
         }
         if (data.status === "Thất bại") {
           const tableInsert = "ordf";
           const tableInsertDetail = "ordfDetail";
-          const colInsert = ["idFail","idUser","infoOrder","note"]
+          const colInsert = ["idFail", "idUser", "infoOrder", "note"]
           const colSelect = [
             "idTrans",
             "idUser",
@@ -140,11 +155,11 @@ export default class OrderController {
             sql`${data.note ? data.note : ""}`.as("note"),
           ];
           const insertOrderF = await statement.insertSubQuery(tableInsert, colInsert, tableSelect, colSelect, condition);
-          const insertOrderFDetail = await statement.insertSubQuery(tableInsertDetail,colInsertDetail,tableSelectDetail,colSelectDetail,condition);
+          const insertOrderFDetail = await statement.insertSubQuery(tableInsertDetail, colInsertDetail, tableSelectDetail, colSelectDetail, condition);
         }
         sql`SET FOREIGN_KEY_CHECKS=0`.execute(db);
-        await statement.removeData("ordDetail",condition)
-        await statement.removeData("ord",condition)
+        await statement.removeData("ordDetail", condition)
+        await statement.removeData("ord", condition)
         sql`SET FOREIGN_KEY_CHECKS=1`.execute(db);
       }
       responseMessage(res, 200, "Update status success");
@@ -154,9 +169,9 @@ export default class OrderController {
       };
     }
   };
-  public getPurchaseOrderByUser = async(request: Request, res: Response) => {
+  public getPurchaseOrderByUser = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser
-    handleFindData(res,order.getPurchaseOrderByUser(idUser))
+    handleFindData(res, order.getPurchaseOrderByUser(idUser))
   }
 }

@@ -49,4 +49,10 @@ export default class PostsController {
     };
     handleChangeData(res, statement.updateDataByCondition("posts", changeData, condition), "update");
   };
+  public getCommentPost = async (req:Request,res:Response) => {
+    const idPost = req.params['id']
+    const current_page = req.params["page"] ? Number(req.params["page"]) : 1
+
+
+  }
 }

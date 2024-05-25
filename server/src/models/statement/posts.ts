@@ -20,4 +20,18 @@ export default class PostStatement{
         .where("idPost","=",id)
         .execute()
     }
+    public getCommentByPost = async(idPost:number) => {
+        return await db.selectFrom("commentPost as cp")
+        .select(["cp.id","cp.idUser","users.nameUser","users.img","cp.idPost","cp.created_date","cp.commentValue"])
+        .leftJoin("users","users.idUser","cp.idUser")
+        .where("cp.idPost","=",idPost)
+        .orderBy("cp.created_date desc")
+        .execute()
+    }
+    public getCountCommentByPost = async(idPost:number) => {
+        return await db.selectFrom("commentPost as cp")
+        .select((eb:any) => eb.fn.count("id").as("total"))
+        .where("cp.idProduct","=",idPost)
+        .execute()
+    }
 }

@@ -43,18 +43,12 @@ export default class ProductController {
       const result = <ProductType[]>await products.findDetail(Number(idProduct), type, colDetail);
       const parseResult = result.map((e: any) => {
         let subImg = e.img;
-        let parseDetail = e.detail;
-        let resultData: any = {};
-        Object.keys(parseDetail[0]).forEach((key) => {
-          let values = parseDetail.map((d: any) => d[key]);
-          resultData[key] = Array.from(new Set(values));
-        });
         let formatResult = {
           ...e,
           imgProduct: subImg.every((c: any) => Object.values(c).every((value) => value === null))
             ? [{ img: e.imgProduct, type: "default" }]
             : [{ img: e.imgProduct, type: "default" }, ...subImg],
-          detail: [resultData],
+          
         };
         delete formatResult.img;
         return formatResult;
@@ -82,7 +76,6 @@ export default class ProductController {
   public getSale = async (req: Request, res: Response) => {
     const currentDate = new Date().toISOString().split('T')[0]
     handleFindData(res, products.findSale(currentDate));
-
   }
   public getSaleDetail = async (req: Request, res: Response) => {
     const idSale = req.params["idSale"];
@@ -171,6 +164,10 @@ export default class ProductController {
         responseMessageData(res, 500, "Server errors", errors);
       };
     }
+  }
+  public getColByType = async (req:Request,res:Response) => {
+    const type = req.params['nameType']
+    handleFindData(res,products.getColumnByType(type))
   }
 
 }

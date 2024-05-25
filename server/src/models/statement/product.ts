@@ -94,6 +94,7 @@ export default class ProductStatement {
         "p.idType",
         "brand",
         "t.nameType",
+        "p.status as action",
         sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount,
         SUM(CASE WHEN w.statusWare = 'import' THEN countProduct ELSE 0 END) - SUM(CASE WHEN w.statusWare = 'export' THEN countProduct ELSE 0 END) AS quantity
         `,
@@ -109,7 +110,6 @@ export default class ProductStatement {
       .leftJoin("saleDetail as sd", "p.idProduct", "sd.idProduct")
       .leftJoin("sale", "sd.idSale", "sale.idSale")
       .where("p.idProduct", "=", idProduct)
-      .where("p.status", "=", "show")
       .execute();
   };
 

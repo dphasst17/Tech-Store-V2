@@ -1,6 +1,8 @@
-
+import compression from "compression"
 import express from "express";
+import Redis from 'ioredis';
 import rateLimit from "express-rate-limit";
+
 import productRoute from "./routes/product";
 import authRoute from "./routes/auth";
 import userRoute from "./routes/user";
@@ -9,8 +11,24 @@ import cartRoute from "./routes/cart"
 import wareRoute from "./routes/warehouse"
 import postRoute from "./routes/posts"
 import commentRoute from "./routes/comment"
+import statisticalRoute from "./routes/statistical" 
+import tableRoute from "./routes/table"
+
 const app = express();
 const port = process.env.PORT ||3030;
+const redis = new Redis({
+  host: process.env.HOST_REDIS,
+  port: Number(process.env.PORT_REDIS),
+});
+
+redis.ping((err, result) => {
+  if (err) {
+    console.error('Failed to connect to Redis:', err);
+  } else {
+    console.log('Connected to Redis:', result);
+  }
+  redis.quit();
+});
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -37,13 +55,20 @@ const apiLimiter = rateLimit({
 });
 
 app.use((req, res, next) => {
-  console.log(`Endpoint: ${req.originalUrl}`);
+  const start = Date.now();
+  res.on('finish', () => { 
+    const duration = Date.now() - start;
+    const date = new Date().toISOString();
+    const status = res.statusCode;
+    console.log(`[${date}] ${status} - ${duration}ms ${req.method} - ${req.originalUrl}`);
+  });
   next();
 });
 
 
-app.use(express.json());
 
+app.use(express.json());
+app.use(compression())
 
 
 app.get("/", (req, res) => {
@@ -57,6 +82,8 @@ app.use('/cart',cartRoute)
 app.use('/ware',wareRoute)
 app.use('/post',postRoute)
 app.use('/comment',commentRoute)
+app.use('/api/statistical',statisticalRoute)
+app.use('/api/table',tableRoute)
 
 app.get('/api/test',(req,res) => {
   res.json("test")

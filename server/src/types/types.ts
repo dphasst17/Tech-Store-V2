@@ -70,7 +70,7 @@ export interface TransportType{
 }
 export interface TransportDetailType{
   idOrdDetail:number,
-  idTrans:number,
+  idOrder:number,
   idProduct:number,
   countProduct:number,
   discount:number,
@@ -147,9 +147,16 @@ export interface CommentType{
   idComment:number,
   commentValue:string,
   idProduct:number,
-  dateComment:string
+  dateComment:string,
+  idUser:string
 }
-
+export interface CommentPostType{
+  id:number,
+  idUser:string,
+  idPost:number,
+  created_date:Date,
+  commentValue:string
+}
 export interface PaymentType{
   id:number,
   payment_id:string,

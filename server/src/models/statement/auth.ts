@@ -6,6 +6,13 @@ export default class AuthStatement{
         .where('username','=',`${username}`)
         .execute()
     }
+    public getAuthAdmin = async(username:string) => {
+        return await db.selectFrom('auth')
+        .select(["idUser","username","password_hash","role"])
+        .where('username','=',`${username}`)
+        .where('role','!=',2)
+        .execute()
+    }
     public getMail = async(email:string) => {
         return await db.selectFrom('users')
         .select(["idUser","email"])

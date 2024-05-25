@@ -3,6 +3,7 @@ import AuthController from "controllers/auth";
 import { verifyToken } from "middlewares/middle";
 const router = express.Router();
 const authController = new AuthController()
+router.post('/login/admin',authController.adminLogin)
 router.post('/login',authController.login)
 router.post('/logout',verifyToken,authController.logout)
 router.post('/register',authController.register)

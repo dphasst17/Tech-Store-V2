@@ -3,7 +3,7 @@ import type { RequestCustom } from "types/types";
 import UserStatement from "models/statement/user";
 import Statements, { type ConditionType } from "models/statement/statement";
 import { responseData, responseMessage, responseMessageData } from "utils/response";
-import { convertData,handleFindData } from "utils/utils";
+import { convertData, handleFindData } from "utils/utils";
 import { db } from "models/connect";
 
 const userStatement = new UserStatement();
@@ -12,7 +12,7 @@ export default class UserController {
   public getUser = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;
-    handleFindData(res,userStatement.getUser(idUser))
+    handleFindData(res, userStatement.getUser(idUser))
   };
   public userUpdate = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
@@ -20,17 +20,22 @@ export default class UserController {
     const data = req.body;
     const table = data.table;
     const detail = convertData(data.detail);
-    const condition:ConditionType = {
-        conditionName:data.col,
-        conditionMethod:'=',
-        value:data.col === "idUser" ? idUser : data.cValue 
+    const condition: ConditionType = {
+      conditionName: "idUser",
+      conditionMethod: '=',
+      value: idUser
     }
     try {
-        const result = await statement.updateDataByCondition(table,detail,condition)
-        if(!result){
-            return responseMessage(res,401,'Update is failed')
-        }
-        responseMessage(res,200,'Update is success')
+      const result = await statement.updateDataByCondition(table, detail, condition)
+      if (!result) {
+        return responseMessage(res, 401, 'Update is failed')
+      }
+      const date = new Date().toISOString().split("T")[0]
+      const dataUpdate = convertData([{
+        'updated_at':date
+      }])
+      await statement.updateDataByCondition(table,dataUpdate,condition)
+      responseMessage(res, 200, 'Update is success')
     } catch {
       (errors: any) => {
         responseMessageData(res, 500, "Server errors", errors);
@@ -48,36 +53,36 @@ export default class UserController {
       data.listId("update"|"remove"):[1,2,3,4] |[1]
     }
     */
-  public userAddress = async(request: Request, res: Response) => {
+  public userAddress = async (request: Request, res: Response) => {
     const req = request as RequestCustom
     const idUser = req.idUser
     const data = req.body
-    if(data.type==="add"){
-      const formatData = convertData([{idUser:idUser,...data.dataOperation}])
-      const result = await statement.insertData("userAddress",formatData)
-      return responseData(res,201,{idAddress:Number(result.insertId)})
+    if (data.type === "add") {
+      const formatData = convertData([{ idUser: idUser, ...data.dataOperation }])
+      const result = await statement.insertData("userAddress", formatData)
+      return responseData(res, 201, { idAddress: Number(result.insertId) })
     }
-    if(data.type==="update" || data.type==="remove"){
-      const formatData = convertData([{typeAddress:data.dataOperation.typeAddress}])
-      const condition:ConditionType = {
-        conditionName:"idAddress",
-        conditionMethod:"in",
+    if (data.type === "update" || data.type === "remove") {
+      const formatData = convertData([{ typeAddress: data.dataOperation.typeAddress }])
+      const condition: ConditionType = {
+        conditionName: "idAddress",
+        conditionMethod: "in",
         value: data.dataOperation.listId
       }
-      if(data.type === "update" && data.dataOperation.typeAddress === "default"){
-        await 
-        db.updateTable("userAddress")
-        .set({
-          "typeAddress": 'extra'
-        })
-        .where('idUser', '=', idUser)
-        .where('typeAddress','=','default')
-        .executeTakeFirst()
+      if (data.type === "update" && data.dataOperation.typeAddress === "default") {
+        await
+          db.updateTable("userAddress")
+            .set({
+              "typeAddress": 'extra'
+            })
+            .where('idUser', '=', idUser)
+            .where('typeAddress', '=', 'default')
+            .executeTakeFirst()
       }
-      data.type === "update" 
-      ? statement.updateDataByCondition("userAddress",formatData,condition) 
-      : statement.removeData("userAddress",condition)
-      return responseMessage(res,200,'Address change is success')
+      data.type === "update"
+        ? statement.updateDataByCondition("userAddress", formatData, condition)
+        : statement.removeData("userAddress", condition)
+      return responseMessage(res, 200, 'Address change is success')
 
     }
   }

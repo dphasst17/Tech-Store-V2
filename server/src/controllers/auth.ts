@@ -66,6 +66,37 @@ const handleRegister = async (username: string, password?: string, email?: strin
 };
 
 export default class AuthController {
+  public adminLogin = async (req: Request, res: Response) => {
+    const data = req.body
+    const username = data.username
+    const password = data.password
+    let isPassword:boolean | string = "";;
+    try{
+      const result = await authStatement.getAuthAdmin(username)
+      if(!result || result.length === 0){
+        return responseMessage(res, 401, "Username does not exist");
+      }
+      const password_hash = result[0].password_hash;
+      isPassword = data.username ? bcrypt.compareSync(password, password_hash) : "";
+      if (isPassword !== "" && !isPassword) {
+        return responseMessage(res, 401, "Incorrect password");
+      }
+      const { token: accessToken, expiredToken: expiredA } = createToken(result[0].idUser, "600s");
+      const { token: refreshToken, expiredToken: expiredR } = createToken(result[0].idUser, "5d");
+      const condition: ConditionType = {
+        conditionName: "idUser",
+        conditionMethod: "=",
+        value: result[0].idUser,
+      };
+      await statement.updateDataByCondition("auth", [{ nameCol: "rfToken", value: refreshToken }, { nameCol: "status", value: "login" }], condition);
+      responseData(res, 200, { accessToken, refreshToken, expiredA, expiredR });
+    }
+    catch{
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
   public login = async (req: Request, res: Response) => {
     const data = req.body;
     const username = data.username ? data.username : data.email;

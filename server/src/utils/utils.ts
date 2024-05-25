@@ -33,7 +33,7 @@ export const handleChangeData = async(res: any, handle: any,method:"add" | "upda
     if(!result){
       responseMessageData(res, 401, `${method.toUpperCase()} is failed`);
     }
-    responseMessageData(res, 200, `${method.toUpperCase()} is success`);
+    responseMessageData(res, method === "add" ? 201 : 200, `${method.toUpperCase()} is success`);
   } catch {
     (errors: any) => {
       responseMessageData(res, 500, "Server errors", errors);
