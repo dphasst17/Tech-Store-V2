@@ -1,9 +1,9 @@
 import { Button, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from "@nextui-org/react";
-import { useContext, useEffect, useState } from "react";
-import { Modals, UserAddressAddType, UserType } from "../../../types/type";
+import { useEffect, useState } from "react";
+import { Modals, UserAddressAddType } from "../../../types/type";
 import { getApiProvince, getProvincesDetail, userAddress } from "../../../api/user";
 import { GetToken } from "../../../utils/token";
-import { StateContext } from "../../../context/stateContext";
+import { userStore } from "../../../store/user";
 interface ResultAddress {
   provinces: string;
   districts: string;
@@ -12,7 +12,7 @@ interface ResultAddress {
   [key: string]: string; // Chữ ký chỉ mục này cho phép bạn truy cập vào thuộc tính của object bằng một key kiểu string
 }
 const ModalAddress = ({ setModalName }: Modals) => {
-  const { user, setUser } = useContext(StateContext)
+  const { user, add_address } = userStore()
   const [province, setProvince] = useState<any | null>(null);
   const [idProvinces, setIdProvinces] = useState<string | null>(null);
   const [district, setDistrict] = useState<any | null>(null);
@@ -39,24 +39,19 @@ const ModalAddress = ({ setModalName }: Modals) => {
       type: "add",
       dataOperation: {
         detail: `${resultAddress.details}, ${resultAddress.wards}, ${resultAddress.districts}, ${resultAddress.provinces}`,
-        typeAddress: user && (user[0].address.length === 0 ? 'default' : 'extra')
+        typeAddress: user ? (user[0].address.length === 0 ? 'default' : 'extra') : 'extra'
       }
     }
     token && userAddress(token, dataAddNew)
       .then(res => {
         if (res.status === 201) {
           alert("Add new address is success")
-          user && setUser(user.map((u: UserType) => {
-            return {
-              ...u,
-              address: [
-              ...u.address,{
-                idAddress: res.data.idAddress,
-                type: user && (user[0].address.length === 0 ? 'default' : 'extra'),
-                detail: `${resultAddress.details}, ${resultAddress.wards}, ${resultAddress.districts}, ${resultAddress.provinces}`
-              }]
-            }
-          }))
+          user &&
+            add_address({
+              idAddress: res.data.idAddress,
+              type: user && (user[0].address.length === 0 ? 'default' : 'extra'),
+              detail: `${resultAddress.details}, ${resultAddress.wards}, ${resultAddress.districts}, ${resultAddress.provinces}`
+            })
         }
       })
   }

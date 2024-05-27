@@ -261,8 +261,8 @@ const  Slideshow = () => {
                 </svg>
 
                 <div className="items w-full lg:w-3/5 h-4/5 flex flex-col flex-wrap justify-center content-center">
-                  <div className="title mt-6 px-1">
-                    <span className="overflow-hidden whitespace-nowrap text-ellipsis">
+                  <div className="title mt-6">
+                    <span className="truncate flex items-center justify-center !text-zinc-900 !text-[30px] font-semibold">
                       {items.nameProduct}
                     </span>
                   </div>

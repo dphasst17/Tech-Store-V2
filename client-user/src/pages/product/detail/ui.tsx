@@ -1,17 +1,21 @@
-import { Button } from "@nextui-org/react"
+import { Code } from "@nextui-org/react"
 import { useFetchDataByKey } from "../../../hooks/useFetchData"
 import { useEffect, useState } from "react"
 
 const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number }) => {
   const [currentImage, setCurrentImage] = useState("")
+  const [column,setColumn] = useState<any[] | null>(null);
+  const [option,setOption] = useState<number>(1)
   const { data } = useFetchDataByKey('product', 'productGetDetail', { type: nameType, idProduct: idProduct })
+  const { data:col } = useFetchDataByKey('product', 'getColByType', nameType)
   useEffect(() => {
     data && setCurrentImage(data.data[0].imgProduct[0].img)
     data && (document.title = data.data[0].nameProduct)
-  }, [data])
+    col && setColumn(col.data)
+  }, [data,col])
   return <section className="text-zinc-900">
     <div className="container mx-auto px-4">
-      {data && data.data.map((d: any) => <div className="lg:col-gap-12 xl:col-gap-16 mt-8 grid grid-cols-1 gap-12 lg:mt-12 lg:grid-cols-5 lg:gap-16" key={d.idProduct}>
+      {data && data.data.map((d: any) => <div className="lg:col-gap-12 xl:col-gap-16 mt-8 grid grid-cols-1 gap-12 lg:mt-12 lg:grid-cols-5 lg:gap-16" key={`detail-${d.idProduct}`}>
         <div className="lg:col-span-3 lg:row-end-1">
           <div className="lg:flex lg:items-start">
             <div className="lg:order-2 lg:ml-5">
@@ -26,8 +30,9 @@ const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number
               <div className="flex flex-row items-start lg:flex-col">
                 {d.imgProduct.map((i: { img: string, type: string }) =>
                   <button
+                    key={i.img}
                     onClick={() => { setCurrentImage(i.img) }}
-                    className="flex-0 aspect-square mb-3 h-20 overflow-hidden rounded-lg border-2 border-gray-900 text-center">
+                    className={`flex-0 aspect-square mb-3 h-20 overflow-hidden rounded-lg border-2 hover:border-blue-500 ${currentImage === i.img ? "border-blue-500" : "border-gray-300"} transition-all text-center`}>
                     <img className="h-full w-full object-contain" src={i.img} alt="" />
                   </button>
                 )}
@@ -40,31 +45,30 @@ const UiDetail = ({ nameType, idProduct }: { nameType: string, idProduct: number
           {/* Product Name */}
           <h1 className="sm: text-2xl font-bold text-gray-900 sm:text-3xl">{d.nameProduct}</h1>
           {/* Detail product */}
-          {Object.keys(d.detail[0]).map((k: string) => <>
-            <h2 className="mt-1 text-base text-gray-900">{[k.toLocaleUpperCase()]}</h2>
-            <div className="mt-1 flex select-none flex-wrap items-center gap-1">
-            {d.detail.map((d: any) => d[k].map((de: string | number) => 
-                <Button size="sm" radius="sm" variant="bordered">{typeof(de) === "number" ? de.toFixed(2) : de}</Button>
-              ))}
-              
-            </div>
-    
-          </>
-
-          )}
-
+          <div className="detail-product w-full h-auto flex flex-wrap justify-start items-center">
+            {d.detail.map((d: any, i: number) => <div 
+            onClick={() => {setOption(i+1)}}
+            className="w-[200px] h-auto bg-zinc-50 rounded-md p-2 mx-2 cursor-pointer" 
+            key={`detail-info-${i}`}>
+              <Code className="bg-zinc-950 text-zinc-50">Option {i + 1}</Code>
+              {i+1 === option && <Code radius="sm" className="mx-1 bg-blue-500 text-zinc-50">Default</Code>}
+              {column?.map((k: any) => <Code radius="sm"  className="w-full h-[25px] flex text-zinc-900 truncate my-1" key={k.id}>
+                <span className="truncate">{k.displayname.toUpperCase()}: {k.datatypes === "number" ? d[k.name].toFixed(2): d[k.name]}</span>
+              </Code>)}
+            </div>)}
+          </div>
           {/* Price product  */}
           <div className="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
             <div className="flex items-end">
               <h1 className="text-3xl font-bold">${d.price}</h1>
             </div>
             {/* Button add to cart */}
-            <button type="button" className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800">
+            {d.action === "show" && <button type="button" className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800">
               <svg xmlns="http://www.w3.org/2000/svg" className="shrink-0 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
               Add to cart
-            </button>
+            </button>}
           </div>
 
           <ul className="mt-8 space-y-2">

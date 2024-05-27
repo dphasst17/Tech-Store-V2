@@ -18,6 +18,7 @@ export interface UserType{
     idUser:string,
     nameUser:string,
     phone:string,
+    email:string,
     address:UserAddressType[],
     cart:CartType[]
 }
@@ -55,6 +56,7 @@ export interface ProductType {
     view: number,
     brand: string,
     detail?: any[]
+    action?:"show" | "hide"
 }
 export interface ProductFilterType {
     brand: string[];
@@ -107,5 +109,20 @@ export interface OrderDetailType{
     price:number,
     discount:number,
     countProduct:number
-
 }
+export interface CommentType{
+    id?:number
+    idComment?:number,
+    idProduct?:number,
+    idPost?:number,
+    nameUser:string,
+    img:string,
+    commentValue:string,
+    dateComment?:string,
+    created_date?:string
+}
+export interface CommentResType {
+    total: number,
+    total_page: number,
+    page: number
+  }

@@ -1,22 +1,22 @@
 import { Button, Code, Input, Modal, useDisclosure } from "@nextui-org/react"
-import { StateContext } from "../../context/stateContext"
-import { useContext, useState } from "react"
+import {  useState } from "react"
 import { FaRegTrashAlt } from "react-icons/fa";
 import ModalEdit from "./modal/edit";
 import ModalPassword from "./modal/password";
 import ModalAddress from "./modal/address";
-import { Modals, UserAddressType, UserType } from "../../types/type";
+import { Modals } from "../../types/type";
 import { GetToken } from "../../utils/token";
 import { userAddress } from "../../api/user";
 import Purchase from "./purchase";
 import Order from "./order";
+import { userStore } from "../../store/user";
 interface ListModalType {
   displayName: string,
   name: string,
   modalDetail: ({ setModalName }: Modals) => JSX.Element
 }
 const User = () => {
-  const { user, setUser } = useContext(StateContext)
+  const { user,remove_address,updated_type_address } = userStore()
   const [modalName, setModalName] = useState<string>("");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const listModal: ListModalType[] = [
@@ -45,17 +45,7 @@ const User = () => {
     token && userAddress(token, dataChange)
       .then(res => {
         if (res.status === 200) {
-          user && (setUser(user.map((u: UserType) => {
-            return {
-              ...u,
-              address: type === "update" ? u.address.map((a: UserAddressType) => {
-                return {
-                  ...a,
-                  type: data.listId?.includes(a.idAddress) ? data.typeAddress : a.type === "default" ? "extra" : a.type
-                }
-              }) : u.address.filter((a: UserAddressType) => !data.listId?.includes(a.idAddress))
-            }
-          })))
+          type === "remove" ? remove_address(data.listId!) : updated_type_address(data)
         }
       })
   }

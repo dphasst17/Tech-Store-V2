@@ -6,8 +6,8 @@ import { PostType } from '../../types/type'
 
 const Post = () => {
     const { post } = useContext(StateContext)
-    return <section className="flex items-center w-full h-auto min-h-[80vh]">
-        <div className="p-4 mx-auto w-[90%] h-auto">
+    return <section className="flex items-center justify-center w-full">
+        <div className="p-4 w-[90%]">
             <div className="w-full flex flex-wrap justify-around content-around">
                 {post?.slice(0, 4).map((e: PostType) => <Fade
                 triggerOnce 

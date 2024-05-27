@@ -41,7 +41,8 @@ const Product = () => {
             {currentData && currentData.slice((8 * activePage) - 8, 8 * activePage).map((d: ProductType) => 
             <Product_Layout_01 data={d} name="product" key={`product-${d.idProduct}`}/>)}
         </div>
-        {currentData && <Pagination isCompact size="lg" showControls page={activePage} total={pagination(8, currentData.length)} initialPage={1} onChange={(e) => { setActivePage(e) }} />}
+        {currentData && <Pagination isCompact size="lg" showControls page={activePage} total={pagination(8, currentData.length)} 
+        initialPage={1} onChange={(e) => { setActivePage(e) }} />}
     </div>
 }
 

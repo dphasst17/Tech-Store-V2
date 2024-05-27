@@ -64,7 +64,7 @@ const InfoCheckout = () => {
     },
     {
       id: 'shipping-2',
-      content: 'PEconomical shipping',
+      content: 'Economical shipping',
       costs: 0.5,
       date: '5-10'
     }

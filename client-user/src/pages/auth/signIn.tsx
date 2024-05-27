@@ -2,32 +2,21 @@ import GithubIcon from "../../components/icon/github"
 import FacebookIcon from "../../components/icon/facebook"
 import GoogleIcon from "../../components/icon/google"
 import { Button, Input } from "@nextui-org/react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Auth } from "../../types/type";
-import { useGoogleLogin } from "@leecheuk/react-google-login";
-import { gapi } from "gapi-script"
+import { useGoogleLogin } from "@react-oauth/google"
 const SignIn = ({ handleAuth, setFormName }: { handleAuth: any, setFormName: React.Dispatch<React.SetStateAction<string>> }) => {
     const { register, handleSubmit } = useForm<Auth>()
     const [isShow, setIsShow] = useState(false)
-    const clientId = import.meta.env.VITE_REACT_APP_GOOGLE
-    useEffect(() => {
-        gapi.load("client:auth2", () => {
-            gapi.auth2.init({ clientId: clientId });
-        });
-    }, []);
-    const onFailure = (error: any) => {
-        console.log(error); /* message err */
-    };
-    const onSuccess = (response: any) => {
-        handleAuth('login', { email: response.profileObj.email });
-    };
-    const { signIn } = useGoogleLogin({
-        onSuccess,
-        onFailure,
-        clientId,
-    });
+    const googleLogin = useGoogleLogin({
+        onSuccess: tokenResponse =>
+            fetch(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenResponse.access_token}`)
+                .then(response => response.json())
+                .then(data => handleAuth('login', { email: data.email }))
 
+
+    })
     const listSignIn = [
         {
             id: 1,
@@ -39,7 +28,7 @@ const SignIn = ({ handleAuth, setFormName }: { handleAuth: any, setFormName: Rea
             id: 2,
             name: 'Google',
             icon: GoogleIcon,
-            handleClick: signIn
+            handleClick: googleLogin
 
         },
         {
@@ -63,9 +52,9 @@ const SignIn = ({ handleAuth, setFormName }: { handleAuth: any, setFormName: Rea
         <h1 className="text-zinc-700 text-[30px] font-bold font-ps-2 my-6">SIGN IN</h1>
         <form className="w-3/5">
             <Input {...register('username', { required: true })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Username" type="text" />
-            <Input {...register('password', { required: true })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Password" 
-            type={isShow ? 'text' : 'password'} 
-            onKeyDown={(e:any) => {e.key==="Enter" && handleSubmit(onSubmit)()}}
+            <Input {...register('password', { required: true })} radius="sm" variant="bordered" className="my-2 text-zinc-900 border-zinc-500" label="Password"
+                type={isShow ? 'text' : 'password'}
+                onKeyDown={(e: any) => { e.key === "Enter" && handleSubmit(onSubmit)() }}
             />
         </form>
         <div className="w-3/5 h-[30px] text-blue-500 flex justify-between">

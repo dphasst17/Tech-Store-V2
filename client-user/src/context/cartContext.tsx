@@ -1,16 +1,14 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { StateContext } from "./stateContext";
+import { createContext, useEffect, useState } from "react";
 import { CartType, ProductType } from "../types/type";
 import { cartInsert, cartRemove, cartUpdate } from "../api/user";
 import { GetToken } from "../utils/token";
+import { userStore } from "../store/user";
 
 export const CartContext = createContext<any>({});
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-    const {user} = useContext(StateContext)
+    const {user} = userStore()
     const [cart,setCart] = useState<CartType[]|null>(null)
-    useEffect(() => {
-        user && setCart(user[0].cart)
-    },[user])
+    useEffect(() => {user && setCart(user[0].cart)},[user])
     const addItemCart = (data:ProductType) => {
         const getId = cart && cart.filter((f:CartType) => f.idProduct === data.idProduct)
         if(getId?.length !== 0 ){

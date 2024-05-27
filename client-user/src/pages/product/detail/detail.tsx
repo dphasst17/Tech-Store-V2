@@ -6,7 +6,7 @@ const DetailProduct = () => {
   const params = useParams()
   return <div className="font-[sans-serif] bg-white">
     <UiDetail nameType={params.nameType!} idProduct={Number(params.idProduct)}/>
-    <CommentProduct />
+    <CommentProduct idProduct={Number(params.idProduct)}/>
   </div>
 }
 

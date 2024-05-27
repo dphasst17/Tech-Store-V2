@@ -35,4 +35,11 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+.font-mono{
+  font-family: "JetBrains Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
 

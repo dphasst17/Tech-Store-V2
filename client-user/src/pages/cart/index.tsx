@@ -36,10 +36,10 @@ const Cart = () => {
                     Total count:
                     <span>
                         {
-                            listCheckOut.length !== 0 ? 
-                            cart?.filter((f: CartType) => listCheckOut.includes(f.idCart))
-                            .map((c: CartType) => c.countProduct)
-                            .reduce((a: number, b: number) => a + b)
+                            listCheckOut.length !== 0  && cart ? 
+                            cart.filter((f: CartType) => listCheckOut.includes(f.idCart))
+                            ?.map((c: CartType) => c.countProduct)
+                            ?.reduce((a: number, b: number) => a + b)
                             :0
                         }
                     </span>

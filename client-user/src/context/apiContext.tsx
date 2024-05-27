@@ -5,10 +5,12 @@ import { productGetByType } from "../api/product";
 import { GetToken } from "../utils/token";
 import { getUser } from "../api/user";
 import { getOrderByUser, getPurchaseOrder } from "../api/order";
+import { userStore } from "../store/user";
 
 export const ApiContext = createContext({});
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
-    const { setPurchase,setOrder,setSale, setUser, isLogin, setPost, setNewProduct, setProduct, setType } = useContext(StateContext)
+    const { setPurchase,setOrder,setSale, isLogin, setPost, setNewProduct, setProduct, setType } = useContext(StateContext)
+    const {setStoreUser} = userStore()
     const { data: dataType } = useFetchData('product', 'productGetAllType')
     const { data: dataSale } = useFetchData('product', 'getSaleEvent')
     const { data: newProduct } = useFetchData('product', 'productGetNew')
@@ -35,7 +37,7 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
             token && (
                 getUser(token)
                     .then(res => {
-                        res.status === 200 && setUser(res.data)
+                        res.status === 200 && setStoreUser(res.data)
                     }),
                 getOrderByUser(token)
                 .then(res => {

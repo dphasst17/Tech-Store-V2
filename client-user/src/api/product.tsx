@@ -26,3 +26,7 @@ export const getSaleEvent = async() => {
     return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/sale`)
     .then(res => res.json())
 }
+export const getColByType = async(type:string) => {
+    return fetch(`${import.meta.env.VITE_REACT_APP_URL}/api/product/col/${type}`)
+    .then(res => res.json())
+}
