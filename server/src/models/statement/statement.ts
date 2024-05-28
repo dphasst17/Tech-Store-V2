@@ -21,7 +21,6 @@ export default class Statements {
   //insert data
   public insertData = async (table: string, data: ValueType[]) => {
     const result = data.map((c) => `${c.nameCol}:${typeof c.value === "string" ? `"${c.value}"` : c.value}`).toString();
-
     return await db
       .insertInto(table)
       .values(eval(`({${result}})`))

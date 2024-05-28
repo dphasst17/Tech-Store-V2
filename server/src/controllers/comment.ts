@@ -15,7 +15,7 @@ export default class CommentController{
         const idProduct = req.params["id"]
         const current_page = req.params["page"] ? Number(req.params["page"]) : 1
         try {
-            const getCount = await commentStatement.getCountCommentByProduct(Number(idProduct));
+            const getCount = await commentStatement.getCountComment(Number(idProduct),"comments");
             const getData = await commentStatement.getByProduct(Number(idProduct),Number(current_page))
             const total_p = Math.ceil((getCount.flatMap((t:any) => t.total)[0]/4))
             
