@@ -31,10 +31,10 @@ export interface UserType{
   updated_at?:Date,
 }
 export interface UserAddressType{
-  id:number,
+  idAddress:number,
   idUser:string,
   typeAddress:'default' | 'extra',
-  detail:string
+  detail:string,
 }
 export interface CartType{
   idUser:string,

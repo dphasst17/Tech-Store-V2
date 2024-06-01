@@ -22,7 +22,6 @@ export default class ProductStatement {
             .selectFrom("typedetail as td")
             .select(["id", "type", "name", "datatypes", "displayname", "displayorder"])
             .whereRef("td.type", "=", "type.nameType")
-            .where("td.displayorder", "<", 5)
             .orderBy("td.displayorder asc")
         ).as("detail"),
       ])
@@ -40,6 +39,7 @@ export default class ProductStatement {
         "p.idType",
         "brand",
         "t.nameType",
+        "p.status as action",
         sql`IF(sale.end_date >= CURDATE() AND sale.start_date <= CURDATE(), IFNULL(sd.discount, 0), 0) AS discount,SUM(CASE WHEN w.statusWare = 'import' THEN countProduct ELSE 0 END) - SUM(CASE WHEN w.statusWare = 'export' THEN countProduct ELSE 0 END) AS quantity
         `,
       ])
@@ -101,7 +101,7 @@ export default class ProductStatement {
         jsonArrayFrom(
           eb.selectFrom("imageProduct as i").select(["type", "img"]).whereRef(`i.idProduct`, "=", "p.idProduct")
         ).as("img"),
-        jsonArrayFrom(eb.selectFrom(type).select(colDetail).whereRef(`${type}.idProduct`, "=", "p.idProduct")).as(
+        jsonArrayFrom(eb.selectFrom(type).select(["id",...colDetail]).whereRef(`${type}.idProduct`, "=", "p.idProduct")).as(
           "detail"
         ),
       ])

@@ -55,4 +55,21 @@ export default class TableController {
       };
     }
   }
+  public deleteColumn = async (req: Request, res: Response) => {
+    const data = req.body
+    const method = "remove"
+    const tbName = data.table
+    const column = data.column
+    try {
+      const result: any = await statement.columnChange(method, tbName, column);
+      if (result) {
+        return responseMessageData(res, 401, `Remove data is failed`);
+      }
+      responseMessageData(res, 200, `Remove data is success`);
+    } catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+      };
+    }
+  }
 }

@@ -1,6 +1,14 @@
 {
   "name": "server",
   "module": "index.ts",
+  "scripts": {
+    "migrate": "bun -b kysely-migrate",
+    "db:start": "docker-compose up -d",
+    "db:stop": "docker-compose down",
+    "db:shutdown": "powershell.exe -Command \"Stop-Process -Name 'Docker Desktop'\" && wsl --shutdown",
+    "start": "bun --watch run src/server.ts",
+    "build": "tsc"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
@@ -27,13 +35,5 @@
     "kysely-migrate": "^0.0.16",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.5"
-  },
-  "scripts": {
-    "migrate": "bun -b kysely-migrate",
-    "db:start": "docker-compose up -d",
-    "db:stop": "docker-compose down",
-    "db:shutdown": "powershell.exe -Command \"Stop-Process -Name 'Docker Desktop'\" && wsl --shutdown",
-    "start": "bun --watch run src/server.ts",
-    "build": "tsc"
   }
 }

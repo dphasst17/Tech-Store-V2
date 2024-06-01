@@ -28,6 +28,22 @@ export default class PostsController {
     const idPosts = req.params["id"];
     handleFindData(res, postStatement.getDetail(Number(idPosts)));
   };
+  public insertPost = async (req: Request, res: Response) => {
+    const data = req.body;
+    const changeData = convertData(data);
+    try {
+      const result = await statement.insertData("posts", changeData);
+      if(!result){
+        return responseMessageData(res, 401, `Post created is failed`);
+      }
+      responseMessageData(res, 201, `Post created is success`,{id:Number(result.insertId)});
+    } catch {
+      (errors: any) => {
+        responseMessageData(res, 500, "Server errors", errors);
+        throw errors
+      };
+    }
+  }
   public insertCommentPost = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;

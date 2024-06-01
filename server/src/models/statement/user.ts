@@ -45,4 +45,23 @@ export default class UserStatement {
       .where("users.idUser", "=", `${idUser}`)
       .execute();
   };
+  //#create public function get all user
+  public getAllUser = async () => {
+    return await db
+      .selectFrom("users")
+      .select(["idUser", "nameUser", "phone", "email"])
+      .leftJoin("auth", "users.idUser", "auth.idUser")
+      .where("auth.role", "=", 2)
+      .execute();
+  }
+
+  public getAllAddress = async () => {
+    return await db
+      .selectFrom("userAddress")
+      .select((eb) => [
+        "userAddress.idAddress","userAddress.idUser","userAddress.typeAddress","userAddress.detail",
+        jsonObjectFrom(eb.selectFrom("users").select(["nameUser",]).whereRef("users.idUser","=","userAddress.idUser")).as("user")
+      ])
+      .execute();
+  }
 }

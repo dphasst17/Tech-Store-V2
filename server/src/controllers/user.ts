@@ -86,4 +86,11 @@ export default class UserController {
 
     }
   }
+
+  public getAllUser = async (request: Request, res: Response) => {
+    handleFindData(res, userStatement.getAllUser())
+  }
+  public getAllAddress = async (request: Request, res: Response) => {
+    handleFindData(res, userStatement.getAllAddress())
+  }
 }

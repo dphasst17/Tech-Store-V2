@@ -22,5 +22,4 @@ export default class WarehouseController{
         const formatData = convertData(result)
         handleChangeData(res,statement.insertData("warehouse",formatData),"add")
     }
-
 }
