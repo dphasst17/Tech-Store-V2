@@ -7,7 +7,7 @@
     "db:stop": "docker-compose down",
     "db:shutdown": "powershell.exe -Command \"Stop-Process -Name 'Docker Desktop'\" && wsl --shutdown",
     "start": "bun --watch run src/server.ts",
-    "build": "tsc"
+    "build": "bun build ./src/server.ts ./src/**/*.ts --outdir dist --target node"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
