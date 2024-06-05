@@ -8,10 +8,12 @@ import type {
   OrderDetailType,
   OrderType,
   PaymentType,
+  PositionType,
   PostsType,
   ProductType,
   SaleDetailType,
   SaleType,
+  StaffType,
   TransportDetailType,
   TransportType,
   TypeDetail,
@@ -43,6 +45,8 @@ export interface Database {
   typedetail: TypeDetail;
   userAddress: UserAddressType;
   users: UserType;
+  staff:StaffType;
+  position:PositionType;
   warehouse: WarehouseType;
 
   [anyTable: string]: any;

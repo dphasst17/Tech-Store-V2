@@ -36,7 +36,6 @@ export default class Statements {
     return await db.insertInto(table).values(resultLengthMulti).executeTakeFirst();
   };
 
-
   //insert data with select from table
   public insertSubQuery = async (
     tableInsert: string,
@@ -56,7 +55,6 @@ export default class Statements {
       })
       .execute();
   };
-
 
   public updateDataByCondition = async (table: string, data: ValueType[], condition: ConditionType) => {
     const result = data.map((c) => `${c.nameCol}:${typeof c.value === "string" ? `'${c.value}'` : c.value}`).toString();

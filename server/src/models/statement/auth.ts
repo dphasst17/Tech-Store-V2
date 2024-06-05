@@ -7,6 +7,13 @@ export default class AuthStatement{
         .execute()
     }
     public getAuthAdmin = async(username:string) => {
+        console.log(
+            db.selectFrom('auth')
+        .select(["idUser","username","password_hash","role"])
+        .where('username','=',`${username}`)
+        .where('role','!=',2)
+        .compile()
+        )
         return await db.selectFrom('auth')
         .select(["idUser","username","password_hash","role"])
         .where('username','=',`${username}`)

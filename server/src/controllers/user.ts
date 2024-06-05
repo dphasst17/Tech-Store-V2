@@ -14,6 +14,11 @@ export default class UserController {
     const idUser = req.idUser;
     handleFindData(res, userStatement.getUser(idUser))
   };
+  public adminGetInfo = async (request: Request, res: Response) => {
+    const req = request as RequestCustom;
+    const idUser = req.idUser;
+    handleFindData(res, userStatement.adminGetInfo(idUser))
+  }
   public userUpdate = async (request: Request, res: Response) => {
     const req = request as RequestCustom;
     const idUser = req.idUser;
@@ -89,6 +94,9 @@ export default class UserController {
 
   public getAllUser = async (request: Request, res: Response) => {
     handleFindData(res, userStatement.getAllUser())
+  }
+  public getAllStaff = async (request: Request, res: Response) => {
+    handleFindData(res, userStatement.getAllStaff())
   }
   public getAllAddress = async (request: Request, res: Response) => {
     handleFindData(res, userStatement.getAllAddress())

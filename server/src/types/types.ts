@@ -30,6 +30,22 @@ export interface UserType{
   created_at?:Date,
   updated_at?:Date,
 }
+export interface StaffType{
+  idStaff:string,
+  name:string,
+  avatar?:string,
+  email?:string,
+  phone?:string,
+  birthday?:Date,
+  address:string,
+  created_at?:Date,
+  updated_at?:Date,
+}
+export interface PositionType{
+  position_id?:number,
+  idStaff?:string,
+  position_name?:string
+}
 export interface UserAddressType{
   idAddress:number,
   idUser:string,

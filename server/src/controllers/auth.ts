@@ -70,7 +70,7 @@ export default class AuthController {
     const data = req.body
     const username = data.username
     const password = data.password
-    let isPassword:boolean | string = "";;
+    let isPassword:boolean | string = "";
     try{
       const result = await authStatement.getAuthAdmin(username)
       if(!result || result.length === 0){
