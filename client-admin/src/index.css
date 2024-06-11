@@ -43,4 +43,13 @@ body {
 .dark .thumbnails-color{
   background-color: #3d3d3d;
 }
+.ql-container.ql-snow{
+  border: none!important;
+}
+.ql-toolbar.ql-snow {
+  border-top: none!important;
+  border-left: none!important;
+  border-right: none!important;
+  border-bottom: solid 1px #6d6c6c!important;
+}
 

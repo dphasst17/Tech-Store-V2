@@ -6,12 +6,14 @@ import { productStore } from "../store/product";
 import { GetToken } from "../utils/token";
 import { getAddress, getInfo, getStaff, getUser } from "../api/user";
 import { userStore } from "../store/user";
+import { postStore } from "../store/post";
 
 export const ApiContext = createContext<any>({});
 export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
-    const {setStatistical} = useContext(StateContext)
+    const {isLogin, setStatistical} = useContext(StateContext)
     const {setCategory,setProduct} = productStore()
     const {setUser,setStaff,setCurrentUser,setAddress} = userStore()
+    const {setPost,setCategoryPost} = postStore()
    useEffect(() => {
     const fetchStatistical = async() => {
         const [productData,userData,revenueData] = await Promise.all([
@@ -31,10 +33,14 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
    },[])
    const {data:dataProduct} = useFetchData('product','productGetAll')
    const {data:categoryData} = useFetchData('product','getAllCategoryProduct')
+   const {data:dataPost} = useFetchData('posts','getAll')
+   const {data:dataCategoryPost} = useFetchData('posts','getCategory')
    useEffect(() => {
     dataProduct && setProduct(dataProduct.data)
     categoryData && setCategory(categoryData.data)
-   },[dataProduct,categoryData])
+    dataPost && setPost(dataPost.data)
+    dataCategoryPost && setCategoryPost(dataCategoryPost.data)
+   },[dataProduct,categoryData,dataPost,dataCategoryPost])
    
    useEffect(() => {
     const fetchData = async() => {
@@ -64,8 +70,8 @@ export const ApiProvider = ({ children }: { children: React.ReactNode }) => {
         )
         
     }
-    fetchData()
-   },[setCurrentUser,setStaff,setUser,setAddress])
+    isLogin && fetchData()
+   },[isLogin])
     return (
         <ApiContext.Provider value={{
         }}>

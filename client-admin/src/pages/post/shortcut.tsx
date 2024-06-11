@@ -1,5 +1,7 @@
 import { Kbd } from "@nextui-org/react"
 import { KbdKey } from "../../types/quill-short-key-type"
+import { useContext } from "react"
+import { StateContext } from "../../context/state"
 interface IShortKey {
     name: string
     detail: { 
@@ -10,6 +12,7 @@ interface IShortKey {
     }[]
 }
 const ShortKey = () => {
+    const {isDark} = useContext(StateContext)
     const shortKey:IShortKey[] = [
         {
             name: 'heading',
@@ -142,13 +145,13 @@ const ShortKey = () => {
     ]
     return <div className="shortKey-container md:w-[90%] h-auto flex flex-wrap justify-around rounded-lg px-2">
         <div className="w-[98%] h-auto">
-            <Kbd className="rounded-md cursor-pointer mx-1" keys={["command"]}>: Command Key</Kbd>
-            <Kbd className="rounded-md cursor-pointer mx-1" keys={["ctrl"]}>: Control Key</Kbd>
-            <Kbd className="rounded-md cursor-pointer mx-1" keys={["shift"]}>:Shift Key</Kbd>
+            <Kbd className="font-bold rounded-md cursor-pointer mx-1" keys={["command"]}>: Command Key</Kbd>
+            <Kbd className="font-bold rounded-md cursor-pointer mx-1" keys={["ctrl"]}>: Control Key</Kbd>
+            <Kbd className="font-bold rounded-md cursor-pointer mx-1" keys={["shift"]}>:Shift Key</Kbd>
         </div>
         {shortKey.map(e => <div className={`${e.name}  w-[98%] lg:w-[23%] h-auto flex flex-col flex-wrap`} key={e.name}>
-            {e.detail.map(d => <span className="w-full flex flex-wrap items-center text-white font-semibold my-2" key={d.result}>
-                <Kbd keys={d.third !== "" && d.second === "shift" ? [d.first, d.second] : [d.first]}>{d.third !== "" ? d.third : d.second}</Kbd>
+            {e.detail.map(d => <span className={`w-full flex flex-wrap items-center font-semibold my-2 ${isDark ? "text-white" : "text-black"}`} key={d.result}>
+                <Kbd className="font-bold" keys={d.third !== "" && d.second === "shift" ? [d.first, d.second] : [d.first]}>{d.third !== "" ? d.third : d.second}</Kbd>
                 : {d.result}
             </span>)}
 

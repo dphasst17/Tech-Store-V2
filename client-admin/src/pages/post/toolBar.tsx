@@ -20,6 +20,7 @@ export const formats = [
   "image",
   "video",
   "formula",
+  "customImage"
 ];
 export const tollBars = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -31,4 +32,5 @@ export const tollBars = [
   ["link", "image", "code-block"],
   [{ color: colorCode }],
   [{ background: colorCode }],
+  ["customImage"]
 ];

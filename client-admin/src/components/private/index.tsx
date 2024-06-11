@@ -1,10 +1,8 @@
 import { Navigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { StateContext } from '../../context/state';
-
+import Cookies from "js-cookie";
 const PrivateRoute = ({children}:{ children: React.ReactNode }) => {
-    const {isLogin} = useContext(StateContext)
-    return  isLogin ? children : <Navigate to="/auth" />;
+    const log = Cookies.get('login')
+    return  log === "true" ? children : <Navigate to="/auth" />;
 
 };
 

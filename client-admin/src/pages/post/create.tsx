@@ -84,6 +84,7 @@ const CreatePosts = () => {
 
   const imageHandler = () => {
     const input = document.createElement('input');
+    console.log(input)
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
     input.click();
@@ -110,7 +111,7 @@ const CreatePosts = () => {
         key: 'l', // The key you want to bind
         shortKey: true,
         shiftKey: true,
-      } as any, (range:Range, _context:any) => {
+      } as any, (range:Range) => {
         const format = range && editor.getFormat(range); // Get the current format
         if (format && format['code-block']) {
           // If the user is in a code block, remove it
@@ -127,7 +128,7 @@ const CreatePosts = () => {
         editor.keyboard.addBinding({
           key: key,
           shortKey: true, // Whether you want to use `CMD`/`CTRL`
-        }, function (_range:Range, _context) {
+        }, () => {
           // What happens when the shortcut is triggered
           editor.format('header', index + 1);
         });
@@ -136,7 +137,7 @@ const CreatePosts = () => {
       editor.keyboard.addBinding({
         key: '0', // The key you want to bind
         shortKey: true, // Whether you want to use `CMD`/`CTRL`
-      }, (_range, _context) => {
+      }, () => {
         // What happens when the shortcut is triggered
         editor.format('header', false); // Remove header format
       });
@@ -148,7 +149,7 @@ const CreatePosts = () => {
           key: key,
           shortKey: true,
           shiftKey: true,
-        } as any, (_range, _context) => {
+        } as any, () => {
 
           editor.format('size', sizes[index]);
         });
@@ -165,7 +166,7 @@ const CreatePosts = () => {
           key: key,
           shortKey: true,
 
-        }, (_range, _context) => {
+        }, () => {
 
           editor.format(shortcuts[key].format, shortcuts[key].value);
         });
@@ -175,17 +176,17 @@ const CreatePosts = () => {
         key: 'I', // The key you want to bind
         shortKey: true, // Whether you want to use `CMD`/`CTRL`
         shiftKey: true,
-      } as any, (_range:Range, _context:any) => {
+      } as any, () => {
         imageHandler();
       });
     }
   }, []);
   useEffect(() => {
     if (value !== "" && imgUrl !== "") {
-      let parser = new DOMParser();
-      let doc:any = parser.parseFromString(value, 'text/html');
+      const parser = new DOMParser();
+      const doc:any = parser.parseFromString(value, 'text/html');
 
-      let images = doc.getElementsByTagName('img');
+      const images = doc.getElementsByTagName('img');
       for (let i = 0; i < images.length; i++) {
         images[i].src = imgUrl[i];
       }
@@ -238,7 +239,7 @@ const CreatePosts = () => {
   }, [isPost, resultValue, typePosts])
   return (
     <>
-      <div className="w-full h-[800px] my-4 bg-slate-100">
+      <div className="w-full h-[800px] my-4 bg-slate-100 rounded-md">
         <ReactQuill
           ref={quillRef}
           theme="snow"
@@ -246,17 +247,18 @@ const CreatePosts = () => {
           onChange={setValue}
           formats={formats}
           modules={modules}
-          className="h-[95%]"
+          className="h-[95%] rounded-md !border-none"
         />
       </div>
       <form>
-        <input className={`w-[200px] h-[40px] outline-none ${isDark === true ? 'bg-white' : 'bg-slate-700 text-white'} ${err.type ? 'border-red-500' : 'border-transparent'} border-solid border-[3px] rounded-lg`} type="text" placeholder='Type posts' {...register("type", { required: true })} />
+        <input className={`w-[200px] h-[40px] outline-none ${isDark === true ? 'bg-white' : 'bg-slate-700 text-white'} ${err.type ? 'border-red-500' : 'border-transparent'} border-solid border-[3px] rounded-lg`} type="text" 
+        placeholder='Type posts' {...register("type", { required: true })} />
       </form>
       <button className={`w-[200px] h-[40px] bg-transparent hover:bg-blue-500 border-solid border-blue-500 border-[2px] rounded-lg 
         ${isDark === true ? 'text-white' : 'text-slate-700'} hover:text-white font-bold my-2 transition-all`}
         onClick={(e) => { e.preventDefault(); handleSubmit(onSubmit)() }}
       >
-        Get Image
+        Create Post
       </button>
       {/* <div className="ql-snow bg-slate-100"><div className="ql-editor" dangerouslySetInnerHTML={{ __html: value }} /></div> */}
     </>

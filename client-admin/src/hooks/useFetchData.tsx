@@ -1,5 +1,6 @@
 import * as apiProduct from "../api/product"
 import * as apiUser from "../api/user"
+import * as apiPosts from "../api/post"
 /* import * as apiUser from "../api/user"
 import * as apiOrder from "../api/order"
 import * as apiComment from "../api/comment"
@@ -8,6 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import { StateContext } from "../context/state";
 const productApi = apiProduct as Record<string, any>;
 const userApi = apiUser as Record<string, any>;
+const postsApi = apiPosts as Record<string, any>;
 /* const userApi = apiUser as Record<string, any>;
 const orderApi = apiOrder as Record<string, any>;
 const commentApi = apiComment as Record<string, any>;
@@ -21,18 +23,16 @@ const handleCheckTypeGet = (type: string, fName: any, key?: any) => {
         case 'user':
             url = !key ? userApi[fName] : userApi[fName](key)
             break;
-        /* case 'user':
-            url = !key ? userApi[fName] :userApi[fName](key)
+        case 'posts':
+            url = !key ? postsApi[fName] :postsApi[fName](key)
             break;
+        /* 
         case 'order':
             url = !key ? orderApi[fName] :orderApi[fName](key)
             break;
         case 'comment':
             url = !key ? commentApi[fName] :commentApi[fName](key)
-            break;
-        case 'posts':
-                url = !key ? postsApi[fName] :postsApi[fName](key)
-                break; */
+            break;*/
         default:
             console.log(false);
             break;
