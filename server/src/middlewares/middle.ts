@@ -16,7 +16,7 @@ export const verifyToken = (request:Request,res:Response,next:NextFunction) => {
         .select(["auth.status","auth.rfToken"])
         .where("auth.idUser","=",data.id)
         .execute()
-        if(isLogin[0].status !== "login" && isLogin[0].rfToken === ""){
+        if(isLogin?.[0].status !== "login" && isLogin?.[0].rfToken === ""){
             return responseMessage(res,401,'User is logged out')
         }
         req.idUser = data.id;
@@ -37,7 +37,7 @@ export const verifyTokenAdmin = (request:Request,res:Response,next:NextFunction)
         .where("auth.idUser","=",data.id)
         .where("auth.role","!=",2)
         .execute()
-        if(isLogin[0].status !== "login" && isLogin[0].rfToken === ""){
+        if(isLogin?.[0].status !== "login" && isLogin[0].rfToken === ""){
             return responseMessage(res,401,'User is logged out')
         }
         req.idUser = data.id;
