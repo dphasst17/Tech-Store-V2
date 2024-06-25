@@ -11,7 +11,6 @@ const UI = ({ title,value }: { title: string,value:string}) => {
 }
 const Statistical = () => {
   const { statistical } = useContext(StateContext)
-  /* useEffect(() => { statistical.revenue && console.log(statistical.revenue.map((r:any) => r.total).reduce((a:number,b:number) => a + b)) }, [statistical]) */
   return <div className="dashboard-statistical w-full h-auto min-h-[100px] flex flex-wrap justify-around items-center pt-2 px-2 mb-2">
     <div className="w-full md:w-[49%] xl:w-[35%] h-[200px] bg-zinc-900 rounded-md flex items-center my-1 p-2">
       {statistical.product && <>

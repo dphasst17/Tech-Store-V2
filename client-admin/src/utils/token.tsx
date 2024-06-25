@@ -2,8 +2,8 @@ import Cookies from "js-cookie"
 import { removeLocalStorage } from "./localStorage"
 import { authToken } from "../api/auth"
 export const GetToken = async () => {
-    const access = Cookies.get('aTk')
-    const refresh = Cookies.get('rTk')
+    const access = Cookies.get('a-aTk')
+    const refresh = Cookies.get('a-rTk')
     if (!access) {
         if (!refresh) {
             removeLocalStorage('isLogs')

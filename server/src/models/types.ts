@@ -14,8 +14,6 @@ import type {
   SaleDetailType,
   SaleType,
   StaffType,
-  TransportDetailType,
-  TransportType,
   TypeDetail,
   TypeProduct,
   UserAddressType,
@@ -24,13 +22,9 @@ import type {
 } from "types/types";
 
 export interface Database {
-  ordsDetail: OrderDetailType;
-  ords: OrderType;
   carts: CartType;
   comments: CommentType;
   commentPost:CommentPostType,
-  ordf: OrderType;
-  ordfDetail: OrderDetailType;
   imageProduct: ImageProductType;
   auth: AuthDB;
   posts: PostsType;
@@ -39,8 +33,10 @@ export interface Database {
   products: ProductType;
   sale: SaleType;
   saleDetail: SaleDetailType;
-  ord: TransportType;
-  ordDetail: TransportDetailType;
+
+  order: OrderType;
+  order_Detail: OrderDetailType;
+
   type: TypeProduct;
   typedetail: TypeDetail;
   userAddress: UserAddressType;
@@ -48,7 +44,6 @@ export interface Database {
   staff:StaffType;
   position:PositionType;
   warehouse: WarehouseType;
-
   [anyTable: string]: any;
 }
 

@@ -87,7 +87,7 @@ const User = () => {
         </div>)}
       </div>
     </div>
-    <div className="order w-full h-auto flex flex-wrap justify-center items-center">
+    <div className="order w-full h-auto flex flex-wrap justify-center content-start">
       <Purchase />
       <Order />
     </div>

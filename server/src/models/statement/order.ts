@@ -1,11 +1,11 @@
-import { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/mysql";
+import { jsonArrayFrom } from "kysely/helpers/mysql";
 import { db } from "models/connect";
 
 export default class OrderStatement {
   public getAllOrder = async () => {};
   public getOrderByUser = async (idUser: string) => {
     return await db
-      .selectFrom("ord as t")
+      .selectFrom("order as t")
       .select<any>((eb: any) => [
         "t.idOrder",
         "idShipper",
@@ -20,7 +20,7 @@ export default class OrderStatement {
         "orderStatus",
         jsonArrayFrom(
           eb
-            .selectFrom("ordDetail as td")
+            .selectFrom("order_Detail as td")
             .select((c:any) => [
                 "idOrdDetail", "td.idProduct", "countProduct", "discount",
                 "p.nameProduct","p.price","p.imgProduct"
@@ -33,15 +33,15 @@ export default class OrderStatement {
       .execute();
   };
   public getPurchaseOrderByUser = async(idUser:string) => {
-
-    return await db.selectFrom("ordsDetail as osd")
-    .select(["osd.id","osd.idOrder","osd.idProduct","p.nameProduct","p.imgProduct","p.price","osd.countProduct","osd.discount"])
-    .innerJoin("ords","ords.idBill","osd.idOrder")
-    .leftJoin("products as p","p.idProduct","osd.idProduct")
-    .where("ords.idUser","=",idUser)
+    return await db.selectFrom("order")
+    .select(["order.idOrder","od.idProduct","p.nameProduct","p.imgProduct","p.price","od.countProduct","od.discount"])
+    .innerJoin("order_Detail as od","order.idOrder","od.idOrder")
+    .leftJoin("products as p","p.idProduct","od.idProduct")
+    .where("order.idUser","=",idUser)
+    .where("order.orderStatus","=","success")
     .execute()
   }
-  public getTransportDetail = async (idOrder:string) => {
+  public getOrderdetail = async (idOrder:string) => {
 
   };
 }

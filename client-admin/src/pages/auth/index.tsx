@@ -27,10 +27,10 @@ const Auth = () => {
       if(res.status !== 200){
         toast.error(res.message)
       }else{
-        SetToken('aTk', res.data.accessToken, res.data.expiredA)
-        SetToken('rTk', res.data.refreshToken, res.data.expiredR)
+        SetToken('a-aTk', res.data.accessToken, res.data.expiredA)
+        SetToken('a-rTk', res.data.refreshToken, res.data.expiredR)
         setIsLogin(true)
-        SetToken('login','true',res.data.expiredR)
+        SetToken('a-login','true',res.data.expiredR)
         navigate('/')
       }
     })

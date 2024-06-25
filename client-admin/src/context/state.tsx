@@ -20,7 +20,7 @@ export const StateProvider = ({ children }: { children: React.ReactNode }) => {
     }, [isDark])
     useEffect(() => {
         const isDark = getLocalStorage('isDark')
-        const log = Cookies.get('login')
+        const log = Cookies.get('a-login')
         setIsDark(isDark)
         setIsLogin(log === "true" ? true : false)
     }, [])

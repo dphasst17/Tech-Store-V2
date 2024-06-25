@@ -3,9 +3,9 @@ import { userStore } from "../../store/user"
 import { UserType } from "../../types/types"
 import { useContext, useState } from "react"
 import { pagination } from "../../utils/utils"
-import { DeleteIcon } from "../../components/icon/delete"
 import { BiDetail } from "react-icons/bi"
 import { StateContext } from "../../context/state"
+import { MdBlock } from "react-icons/md";
 
 const User = () => {
     const { isDark } = useContext( StateContext )
@@ -40,9 +40,9 @@ const User = () => {
                                         </span>
                                     </Tooltip>
                                     
-                                    <Tooltip color="danger" content="Delete product">
+                                    <Tooltip color="danger" content="Block user">
                                         <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                                            <DeleteIcon />
+                                            <MdBlock />
                                         </span>
                                     </Tooltip>
                                 </div>

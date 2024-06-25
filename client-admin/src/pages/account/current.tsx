@@ -4,8 +4,12 @@ import { Avatar, Badge, Button, DateInput, Input } from "@nextui-org/react"
 import { CalendarDate, parseDate } from "@internationalized/date";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
+import { useEffect } from "react";
 const CurrentUser = () => {
   const { currentUser } = userStore()
+  useEffect(() => {
+    currentUser && console.log(currentUser)
+  },[currentUser])
   return <div className="current-user w-[95%] md:w-4/5 xl:w-1/4 h-[250px] flex">
     <div className="info-user w-full h-auto pt-1">
       {currentUser && currentUser.map((c: StaffType) => <div className="w-full h-auto flex flex-wrap justify-around items-center" key={`current-user-${c.idStaff}`}>

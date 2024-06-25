@@ -12,12 +12,8 @@ const SaleEvent = () => {
                 <Fade triggerOnce direction="up" delay={0} className='w-full text-center text-[35px] font-bold text-zinc-700'>
                     <span>{s.title}</span>
                     <span className="font-semibold text-[30px] text-center font-mono text-zinc-700">{formatDate(s.start_date)} - {formatDate(s.end_date)}</span>
-                </Fade>
-                {/* <Fade triggerOnce direction="up" delay={0} className='w-full text-center text-[35px] font-bold text-zinc-700'>
-                   h-01 {formatDate(s.start_date)} - {formatDate(s.end_date)}
-                </Fade> */}
-                
-                <div className="saleDetail w-full lg:w-[95%] h-auto flex flex-wrap justify-around items-center px-8">
+                </Fade>                
+                <div className="saleDetail relative w-full lg:w-[95%] h-auto flex flex-wrap justify-around items-center px-8">
                     {
                         s.detail.map((d: any) => <Product_Layout_01 data={d} name="sale" key={`sale-${d.idProduct}`} />)
                     }
